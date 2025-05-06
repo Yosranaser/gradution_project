@@ -26,22 +26,25 @@ with col1:
 with col2:
     maintenance = st.button("🛠️ صيانة")
 
-cred = credentials.Certificate("path/to/your/firebase_key.json")
+cred = credentials.Certificate("predictive-maintance-data-firebase-adminsdk-fbsvc-e6efdfda3e.json")
 firebase_admin.initialize_app(cred, {
-    'databaseURL': 'https://your-project.firebaseio.com/'
+    'databaseURL': 'https://predictive-maintance-data-default-rtdb.firebaseio.com/'
 })
 
 # Read data from Firebase
-ref = db.reference('car_status')
-data = ref.get()
-
-fuel = data['fuel_level']
-speed = data['speed']
-temp = data['engine_temperature']
+fuel = db.reference('fuel_level').get()
+speed = db.reference('speed').get()
+temp = db.reference('engine_temperature').get()
 # عرض محتوى حسب الاختيار
 if dashboard:
     st.success("هندخلك على عرض البيانات...")
     st.write("هنا هنوريك البنزين، السرعة، الفولت، ودرجة الحرارة.")
+    st.metric(label="🚀 السرعة", value=f"{speed} كم/س")
+    st.metric(label="⛽ نسبة البنزين", value=f"{fuel}%")
+    st.metric(label="🌡️ درجة حرارة المحرك", value=f"{temp}°C")
+
+    if temp > 100:
+        st.error("⚠️ درجة حرارة المحرك عالية جدًا! راجع الفني فورًا.")
 
 elif maintenance:
     st.success("هندخلك على صفحة الصيانة...")
