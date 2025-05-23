@@ -30,7 +30,6 @@ cred = credentials.Certificate("predictive-maintance-data-firebase-adminsdk-fbsv
 firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://predictive-maintance-data-default-rtdb.firebaseio.com/'
 })
-
 # Read data from Firebase
 fuel = db.reference('fuel_level').get()
 speed = db.reference('speed').get()
