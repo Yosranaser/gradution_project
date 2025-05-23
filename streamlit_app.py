@@ -1,50 +1,72 @@
 import streamlit as st
 import firebase_admin
 from firebase_admin import credentials, db
-st.set_page_config(page_title="Smart Car Assistant", layout="centered")
+import streamlit as st
+import face_recognition
+import cv2
+import os
+import numpy as np
+from PIL import Image
+known_names = ["yossra", "shorouk"]
+known_encodings = []
 
-st.title("🚗Your Smart Car Assistant")
-st.subheader("مرحبًا بك!")
+for name in known_names:
+    image_path = f"{name}.jpg"
+    if os.path.exists(image_path):
+        image = face_recognition.load_image_file(image_path)
+        encoding = face_recognition.face_encodings(image)
+        if encoding:
+            known_encodings.append(encoding[0])
+        else:
+            st.warning(f"⚠️ الصورة {name}.jpg لم يتم العثور على وجه فيها")
+    else:
+        st.warning(f"⚠️ الصورة {name}.jpg غير موجودة")
 
-st.markdown("""
-### 👋 إزّيك؟  
-الموقع ده معمول علشان يساعدك تعرف حالة عربيتك بسهولة.
+# -------------------------------
+# واجهة Streamlit
+# -------------------------------
+st.title("🎥 Face Authentication")
+st.write("من فضلك فعّل الكاميرا لتسجيل دخولك...")
 
-- لو العربية فيها مشكلة أو محتاجة صيانة، هنقولك فورًا.
-- تقدر كمان تشوف **نسبة البنزين**، **السرعة**، و**درجة حرارة الأجزاء المهمة** وانت سايق أو قبل ما تتحرك.
+# زر تشغيل الكاميرا
+if st.button("ابدأ التحقق"):
+    cap = cv2.VideoCapture(0)
+    stframe = st.empty()
 
-كل اللي عليك:
-- تقول **"صيانة"** لو حابب تتطمن على حالة العربية.
-- أو تقول **"عرض البيانات"** لو حابب تشوف كل حاجة شغالة إزاي دلوقتي.
+    result = None
+    name_detected = None
 
-اختار واحدة من تحت 👇
-""")
+    for _ in range(100):  # نحاول كذا إطار للتعرف
+        ret, frame = cap.read()
+        rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-col1, col2 = st.columns(2)
-with col1:
-    dashboard = st.button("👁️ عرض البيانات")
-with col2:
-    maintenance = st.button("🛠️ صيانة")
+        face_locations = face_recognition.face_locations(rgb_frame)
+        face_encodings = face_recognition.face_encodings(rgb_frame, face_locations)
 
-cred = credentials.Certificate("predictive-maintance-data-firebase-adminsdk-fbsvc-e6efdfda3e.json")
-firebase_admin.initialize_app(cred, {
-    'databaseURL': 'https://predictive-maintance-data-default-rtdb.firebaseio.com/'
-})
-# Read data from Firebase
-fuel = db.reference('fuel_level').get()
-speed = db.reference('speed').get()
-temp = db.reference('engine_temperature').get()
-# عرض محتوى حسب الاختيار
-if dashboard:
-    st.success("هندخلك على عرض البيانات...")
-    st.write("هنا هنوريك البنزين، السرعة، الفولت، ودرجة الحرارة.")
-    st.metric(label="🚀 السرعة", value=f"{speed} كم/س")
-    st.metric(label="⛽ نسبة البنزين", value=f"{fuel}%")
-    st.metric(label="🌡️ درجة حرارة المحرك", value=f"{temp}°C")
+        for encoding in face_encodings:
+            matches = face_recognition.compare_faces(known_encodings, encoding)
+            face_distances = face_recognition.face_distance(known_encodings, encoding)
 
-    if temp > 100:
-        st.error("⚠️ درجة حرارة المحرك عالية جدًا! راجع الفني فورًا.")
+            best_match_index = np.argmin(face_distances)
+            if matches[best_match_index]:
+                name_detected = known_names[best_match_index]
+                result = True
+                break
 
-elif maintenance:
-    st.success("هندخلك على صفحة الصيانة...")
-    st.write("هنا هنعرض لك حالة كل جزء في العربية، وهل محتاج يتصلح ولا تمام.")
+        stframe.image(rgb_frame, channels="RGB")
+
+        if result:
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
+
+    if result:
+        st.success(f"مرحبًا {name_detected.capitalize()} ✅")
+        image_path = f"{name_detected}.jpg"
+        st.image(image_path, caption=name_detected)
+        # هنا تكملي فتح الموقع أو باقي المميزات
+        st.markdown("### ✅ تم الدخول بنجاح، جاري فتح الموقع ...")
+    else:
+        st.error("❌ آسف، لم يتم التعرف على الوجه. لا يمكنك الدخول.")
+
