@@ -1,6 +1,6 @@
 streamlit
 firebase-admin
-face_recognition
+streamlit-webrtc
 opencv-python
 numpy
 Pillow
