@@ -9,7 +9,6 @@ import numpy as np
 from PIL import Image
 known_names = ["yossra", "shorouk"]
 known_encodings = []
-
 for name in known_names:
     image_path = f"{name}.jpg"
     if os.path.exists(image_path):
