@@ -37,7 +37,7 @@ firebase_admin.initialize_app(cred, {
 fuel = db.reference('fuel_level').get()
 speed = db.reference('speed').get()
 temp = db.reference('engine_temperature').get()
-# عرض محتوى حسب الاختيار
+
 if dashboard:
     st.success("هندخلك على عرض البيانات...")
     st.write("هنا هنوريك البنزين، السرعة، الفولت، ودرجة الحرارة.")
