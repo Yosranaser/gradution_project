@@ -30,9 +30,12 @@ with col2:
     maintenance = st.button("🛠 صيانة")
 
 cred = credentials.Certificate("predictive-maintance-data-firebase-adminsdk-fbsvc-e6efdfda3e.json")
-firebase_admin.initialize_app(cred, {
-    'databaseURL':'https://predictive-maintance-data-default-rtdb.firebaseio.com/'
-})
+
+# ✅ تحقق إن Firebase ما تهيأتش قبل كده
+if not firebase_admin._apps:
+    firebase_admin.initialize_app(cred, {
+        'databaseURL': 'https://predictive-maintance-data-default-rtdb.firebaseio.com/'
+    })
 # Read data from Firebase
 fuel = db.reference('fuel_level').get()
 speed = db.reference('speed').get()
