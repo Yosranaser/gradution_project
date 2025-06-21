@@ -1,5 +1,5 @@
 import streamlit as st
-import face_recognition
+
 import cv2
 import os
 import numpy as np
