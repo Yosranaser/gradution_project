@@ -4,6 +4,7 @@ import numpy as np
 from PIL import Image
 import firebase_admin
 from firebase_admin import credentials, db
+from google.auth.exceptions import RefreshError
 st.set_page_config(page_title="Smart Car Assistant", layout="centered")
 
 st.title("🚗Your Smart Car Assistant")
@@ -29,13 +30,24 @@ with col1:
 with col2:
     maintenance = st.button("🛠 صيانة")
 
-cred = credentials.Certificate("predictive-maintance-data-firebase-adminsdk-fbsvc-e6efdfda3e.json")
+try:
+    if not firebase_admin._apps:
+        cred = credentials.Certificate("predictive-maintance-data-firebase-adminsdk-fbsvc-e6efdfda3e.json")
+        firebase_admin.initialize_app(cred, {
+            'databaseURL': 'https://predictive-maintance-data-default-rtdb.firebaseio.com/'
+        })
 
-# ✅ تحقق إن Firebase ما تهيأتش قبل كده
-if not firebase_admin._apps:
-    firebase_admin.initialize_app(cred, {
-        'databaseURL': 'https://predictive-maintance-data-default-rtdb.firebaseio.com/'
-    })
+    # محاولة قراءة بيانات
+    fuel = db.reference('fuel_level').get()
+    print("Fuel Level:", fuel)
+
+except RefreshError as e:
+    st.error("فشل في المصادقة مع Google. تأكد من اتصال الإنترنت وصحة ملف الخدمة.")
+    st.stop()
+except Exception as e:
+    st.error(f"حدث خطأ آخر: {e}")
+    st.stop()
+
 # Read data from Firebase
 fuel = db.reference('fuel_level').get()
 speed = db.reference('speed').get()
