@@ -11,33 +11,37 @@ import io
 
 st.title("Face Authentication using DeepFace")
 
-# تحميل الصور المخزنة
-ref1 = cv2.imread("yossra.jpg")
-ref2 = cv2.imread("shorouk.jpg")
+# تحميل الصورتين المحفوظين
+ref1 = cv2.imread("person1.jpg", 0)
+ref2 = cv2.imread("person2.jpg", 0)
 
-uploaded_image = st.camera_input("Take a picture")
+uploaded_image = st.camera_input("Take your picture")
 
 if uploaded_image is not None:
-    img_bytes = uploaded_image.getvalue()
-    img = Image.open(io.BytesIO(img_bytes))
-    img_np = np.array(img)
+    user_img = Image.open(io.BytesIO(uploaded_image.read())).convert("L")
+    user_img_np = np.array(user_img)
 
-    # قارن مع الصورتين
-    result = None
-    try:
-        result = DeepFace.verify(img_np, ref1, enforce_detection=False)
-        if result["verified"]:
-            st.success("✅ Face matched with Person 1")
-            st.image(ref1, caption="Person 1")
-        else:
-            result = DeepFace.verify(img_np, ref2, enforce_detection=False)
-            if result["verified"]:
-                st.success("✅ Face matched with Person 2")
-                st.image(ref2, caption="Person 2")
-            else:
-                st.error("❌ Face not recognized")
-    except Exception as e:
-        st.error(f"Error during verification: {e}")
+    # استخدام ORB للمطابقة
+    orb = cv2.ORB_create()
+    kp1, des1 = orb.detectAndCompute(user_img_np, None)
+    kp2, des2 = orb.detectAndCompute(ref1, None)
+    kp3, des3 = orb.detectAndCompute(ref2, None)
+
+    bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
+    matches1 = bf.match(des1, des2)
+    matches2 = bf.match(des1, des3)
+
+    score1 = len(matches1)
+    score2 = len(matches2)
+
+    if score1 > score2 and score1 > 20:
+        st.success("✅ Face matched with Person 1")
+        st.image("person1.jpg", caption="Person 1")
+    elif score2 > score1 and score2 > 20:
+        st.success("✅ Face matched with Person 2")
+        st.image("person2.jpg", caption="Person 2")
+    else:
+        st.error("❌ Face not recognized")
 
 
 st.set_page_config(page_title="Smart Car Assistant", layout="centered")
