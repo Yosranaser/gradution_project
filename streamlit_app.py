@@ -36,11 +36,12 @@ if uploaded_image is not None:
         st.success("✅ Face matched with yossra ")
         st.image("yossra.jpg", caption="yossra naser")
     elif score2 > score1 and score2 > 20:
+        flag=1
         st.success("✅ Face matched with shorouk")
         st.image("shorouk2.jpg", caption="shorouk ahmed")
         cap.release()       
         
-        flag=1
+        
     else:
         st.error("❌ Face not recognized")
         flag=0
@@ -82,8 +83,7 @@ if flag==1 :
             firebase_admin.initialize_app(cred, {
                 'databaseURL': 'https://predictive-maintance-data-default-rtdb.firebaseio.com/'
             })
-    
-        # محاولة قراءة بيانات
+
         fuel = db.reference('fuel_level').get()
         print("Fuel Level:", fuel)
     
