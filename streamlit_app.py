@@ -47,7 +47,7 @@ if uploaded_image is not None:
         cap.release()       
         cv2.destroyAllWindows()
 
-if flag==1 
+if flag==1 :
     st.set_page_config(page_title="Smart Car Assistant", layout="centered")
     
     st.title("🚗Your Smart Car Assistant")
