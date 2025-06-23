@@ -5,7 +5,6 @@ from PIL import Image
 import firebase_admin
 from firebase_admin import credentials, db
 import streamlit as st
-from deepface import DeepFace
 import cv2
 import io
 
