@@ -37,8 +37,7 @@ with col2:
     </div>
     """, unsafe_allow_html=True)
 
-with col1:
-    st.image("car_image.jpg", caption="Smart Car Assistant", use_column_width=True)  # لو عندك صورة للعربية
+
 
      
 ref1 = cv2.imread("yossra.jpg", 0)
