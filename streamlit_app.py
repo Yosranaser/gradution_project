@@ -12,8 +12,8 @@ import io
 st.title("Face Authentication using DeepFace")
 
 # تحميل الصورتين المحفوظين
-ref1 = cv2.imread("person1.jpg", 0)
-ref2 = cv2.imread("person2.jpg", 0)
+ref1 = cv2.imread("yossra.jpg", 0)
+ref2 = cv2.imread("shorouk.jpg", 0)
 
 uploaded_image = st.camera_input("Take your picture")
 
