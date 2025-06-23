@@ -35,6 +35,7 @@ if uploaded_image is not None:
     if score1 > score2 and score1 > 20:
         st.success("✅ Face matched with yossra ")
         st.image("yossra.jpg", caption="yossra naser")
+        flag=1
     elif score2 > score1 and score2 > 20:
         flag=1
         st.success("✅ Face matched with shorouk")
