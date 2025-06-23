@@ -8,13 +8,28 @@ import streamlit as st
 import cv2
 import io
 
-st.title("Face Authentication using DeepFace")
-
+ st.set_page_config(page_title="Smart Car Assistant", layout="centered")
+    
+    st.title("🚗Your Smart Car Assistant")
+    st.subheader("مرحبًا بك!")
+    
+    st.markdown("""
+    ### 👋 إزّيك؟  
+    الموقع ده معمول علشان يساعدك تعرف حالة عربيتك بسهولة.
+    
+    - لو العربية فيها مشكلة أو محتاجة صيانة، هنقولك فورًا.
+    - تقدر كمان تشوف *نسبة البنزين، **السرعة، ودرجة حرارة الأجزاء المهمة* وانت سايق أو قبل ما تتحرك.
+    
+    كل اللي عليك:
+    - تقول *"صيانة"* لو حابب تتطمن على حالة العربية.
+    - أو تقول *"عرض البيانات"* لو حابب تشوف كل حاجة شغالة إزاي دلوقتي.
+      📷 اختار واحدة من تحت  ولكن يجب التحقق من الشخصيه اولا التقط صوره لك
+    """)
+    
 ref1 = cv2.imread("yossra.jpg", 0)
 ref2 = cv2.imread("shorouk2.jpg", 0)
 flag=0
 uploaded_image = st.camera_input("Take your picture")
-
 if uploaded_image is not None:
     user_img = Image.open(io.BytesIO(uploaded_image.read())).convert("L")
     user_img_np = np.array(user_img)
@@ -34,12 +49,12 @@ if uploaded_image is not None:
 
     if score1 > score2 and score1 > 20:
         st.success("✅ Face matched with yossra ")
-        st.image("yossra.jpg", caption="yossra naser")
+        st.image("yossra.jpg", caption="yossra naser has sussessifully logged in")
         flag=1
     elif score2 > score1 and score2 > 20:
         flag=1
         st.success("✅ Face matched with shorouk")
-        st.image("shorouk2.jpg", caption="shorouk ahmed")
+        st.image("shorouk2.jpg", caption="shorouk ahmed has sussessifully logged in ")
         
     else:
         st.error("❌ Face not recognized")
@@ -48,25 +63,7 @@ if uploaded_image is not None:
         cv2.destroyAllWindows()
 
 if flag==1 :
-    st.set_page_config(page_title="Smart Car Assistant", layout="centered")
-    
-    st.title("🚗Your Smart Car Assistant")
-    st.subheader("مرحبًا بك!")
-    
-    st.markdown("""
-    ### 👋 إزّيك؟  
-    الموقع ده معمول علشان يساعدك تعرف حالة عربيتك بسهولة.
-    
-    - لو العربية فيها مشكلة أو محتاجة صيانة، هنقولك فورًا.
-    - تقدر كمان تشوف *نسبة البنزين، **السرعة، ودرجة حرارة الأجزاء المهمة* وانت سايق أو قبل ما تتحرك.
-    
-    كل اللي عليك:
-    - تقول *"صيانة"* لو حابب تتطمن على حالة العربية.
-    - أو تقول *"عرض البيانات"* لو حابب تشوف كل حاجة شغالة إزاي دلوقتي.
-    
-    اختار واحدة من تحت 👇
-    """)
-    
+   
     
     
     
