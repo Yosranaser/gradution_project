@@ -10,7 +10,6 @@ import io
 
 st.title("Face Authentication using DeepFace")
 
-# تحميل الصورتين المحفوظين
 ref1 = cv2.imread("yossra.jpg", 0)
 ref2 = cv2.imread("shorouk2.jpg", 0)
 flag=0
