@@ -40,8 +40,6 @@ if uploaded_image is not None:
         flag=1
         st.success("✅ Face matched with shorouk")
         st.image("shorouk2.jpg", caption="shorouk ahmed")
-        cap.release()       
-        cv2.destroyAllWindows()
         
     else:
         st.error("❌ Face not recognized")
