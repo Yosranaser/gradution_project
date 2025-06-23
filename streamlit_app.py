@@ -34,11 +34,11 @@ if uploaded_image is not None:
     score2 = len(matches2)
 
     if score1 > score2 and score1 > 20:
-        st.success("✅ Face matched with Person 1")
-        st.image("person1.jpg", caption="Person 1")
+        st.success("✅ Face matched with yossra ")
+        st.image("yossra.jpg", caption="yossra naser")
     elif score2 > score1 and score2 > 20:
-        st.success("✅ Face matched with Person 2")
-        st.image("person2.jpg", caption="Person 2")
+        st.success("✅ Face matched with shorouk")
+        st.image("shorouk.jpg", caption="shorouk ahmed")
     else:
         st.error("❌ Face not recognized")
 
