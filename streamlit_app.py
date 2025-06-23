@@ -6,8 +6,6 @@ import firebase_admin
 from firebase_admin import credentials, db
 import streamlit as st
 from deepface import DeepFace
-from PIL import Image
-import numpy as np
 import cv2
 import io
 
