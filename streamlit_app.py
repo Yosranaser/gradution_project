@@ -23,6 +23,26 @@ st.markdown("""
 
 اختار واحدة من تحت 👇
 """)
+import cv2
+import streamlit as st
+import numpy as np
+
+st.title("Face Detection")
+
+uploaded_image = st.camera_input("Take a picture")
+
+if uploaded_image is not None:
+    img = np.array(bytearray(uploaded_image.read()), dtype=np.uint8)
+    img = cv2.imdecode(img, 1)
+
+    face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+
+    for (x, y, w, h) in faces:
+        cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 2)
+
+    st.image(img, channels="BGR")
 
 col1, col2 = st.columns(2)
 with col1:
