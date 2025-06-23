@@ -4,60 +4,43 @@ import numpy as np
 from PIL import Image
 import firebase_admin
 from firebase_admin import credentials, db
-from google.auth.exceptions import RefreshError
 import streamlit as st
-import face_recognition
-import numpy as np
+from deepface import DeepFace
 from PIL import Image
+import numpy as np
+import cv2
 import io
 
-st.title("Face Authentication System")
+st.title("Face Authentication using DeepFace")
 
-# Step 1: Load reference images
-reference_faces = {
-    "Yosra": face_recognition.load_image_file("person1.jpg"),
-    "Sara": face_recognition.load_image_file("person2.jpg")
-}
+# تحميل الصور المخزنة
+ref1 = cv2.imread("yossra.jpg")
+ref2 = cv2.imread("shorouk.jpg")
 
-known_encodings = {}
-for name, img in reference_faces.items():
-    encodings = face_recognition.face_encodings(img)
-    if encodings:
-        known_encodings[name] = encodings[0]
+uploaded_image = st.camera_input("Take a picture")
 
-# Step 2: Get user image from camera
-user_image = st.camera_input("Take your picture")
+if uploaded_image is not None:
+    img_bytes = uploaded_image.getvalue()
+    img = Image.open(io.BytesIO(img_bytes))
+    img_np = np.array(img)
 
-if user_image is not None:
-    user_bytes = user_image.getvalue()
-    user_np = np.array(Image.open(io.BytesIO(user_bytes)))
-    
-    face_locations = face_recognition.face_locations(user_np)
-    user_encodings = face_recognition.face_encodings(user_np, face_locations)
-
-    if user_encodings:
-        user_encoding = user_encodings[0]
-
-        # Step 3: Compare with known faces
-        matches = face_recognition.compare_faces(list(known_encodings.values()), user_encoding)
-        face_distances = face_recognition.face_distance(list(known_encodings.values()), user_encoding)
-
-        if any(matches):
-            match_index = np.argmin(face_distances)
-            matched_name = list(known_encodings.keys())[match_index]
-            matched_image = reference_faces[matched_name]
-
-            st.success(f"Welcome, {matched_name}!")
-            st.image(matched_image, caption=f"Matched: {matched_name}", channels="RGB")
-            st.markdown("### ✅ Access Granted. You can now enter the site.")
-
-            # هنا تضيف زر أو تنقله للصفحة التالية حسب الموقع بتاعك
-
+    # قارن مع الصورتين
+    result = None
+    try:
+        result = DeepFace.verify(img_np, ref1, enforce_detection=False)
+        if result["verified"]:
+            st.success("✅ Face matched with Person 1")
+            st.image(ref1, caption="Person 1")
         else:
-            st.error("❌ Face not recognized. Access Denied.")
+            result = DeepFace.verify(img_np, ref2, enforce_detection=False)
+            if result["verified"]:
+                st.success("✅ Face matched with Person 2")
+                st.image(ref2, caption="Person 2")
+            else:
+                st.error("❌ Face not recognized")
+    except Exception as e:
+        st.error(f"Error during verification: {e}")
 
-    else:
-        st.warning("No face detected. Please try again.")
 
 st.set_page_config(page_title="Smart Car Assistant", layout="centered")
 
