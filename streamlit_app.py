@@ -87,7 +87,10 @@ if flag==1 :
     with col2:
         maintenance = st.button("🛠 صيانة")
     
- 
+ cred = credentials.Certificate("https://predictive-maintance-data-default-rtdb.firebaseio.com/")
+firebase_admin.initialize_app(cred, {
+    'databaseURL': 'https://predictive-maintance-data-default-rtdb.firebaseio.com/' 
+})
     
     # Read data from Firebase
     fuel = db.reference('fuel_level').get()
