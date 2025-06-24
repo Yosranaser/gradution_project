@@ -47,7 +47,7 @@ else:
     st.success("تم العثور على ملف الاعتماديات")
     
 if not firebase_admin._apps:
-    cred = credentials.Certificate('predictive-maintance-data-firebase-adminsdk-fbsvc-e6efdfda3e.json')
+    cred = credentials.Certificate('predictive-maintance-data-firebase-adminsdk-fbsvc-35435ce836.json')
     firebase_admin.initialize_app(cred, {
         'databaseURL': 'https://predictive-maintance-data-default-rtdb.firebaseio.com/'
     })
