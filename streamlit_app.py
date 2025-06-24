@@ -40,7 +40,12 @@ with col2:
 
 
 
-
+# تأكد أن الملف موجود في نفس مجلد التطبيق
+if not os.path.exists('predictive-maintance-data-firebase-adminsdk-fbsvc-e6efdfda3e.json'):
+    st.error("ملف الاعتماديات غير موجود!")
+else:
+    st.success("تم العثور على ملف الاعتماديات")
+    
 if not firebase_admin._apps:
     cred = credentials.Certificate('predictive-maintance-data-firebase-adminsdk-fbsvc-e6efdfda3e.json')
     firebase_admin.initialize_app(cred, {
