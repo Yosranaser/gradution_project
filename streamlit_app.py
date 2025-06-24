@@ -73,7 +73,7 @@ if uploaded_image is not None:
    
     
 if not firebase_admin._apps:
-    cred = credentials.Certificate(json.loads(st.secrets["firebase"].to_json()))
+    cred = credentials.Certificate(predictive-maintance-data-firebase-adminsdk-fbsvc-e6efdfda3e.json)
     firebase_admin.initialize_app(cred, {
         'databaseURL': 'https://predictive-maintance-data-default-rtdb.firebaseio.com/'
     })
