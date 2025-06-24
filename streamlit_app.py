@@ -7,15 +7,8 @@ from firebase_admin import credentials, db
 import streamlit as st
 import cv2
 import io
-
-import streamlit as st
-
-# إعداد العرض على اليمين
 st.set_page_config(layout="wide")
-
-# تقسيم الصفحة: عمودين، النص في اليمين
 col1, col2 = st.columns([2, 1])  # col1 = يسار، col2 = يمين
-
 with col2:
     st.markdown("""
     <div style="background-color:#f2f2f2; padding:25px; border-radius:15px; text-align:right; direction:rtl;">
@@ -84,4 +77,110 @@ if not firebase_admin._apps:
     firebase_admin.initialize_app(cred, {
         'databaseURL': 'https://predictive-maintance-data-default-rtdb.firebaseio.com/'
     })
+data = {
+    "esp32_temperature_(°c)": db.reference('esp32_temperature_(°c)').get(),
+    "stm32_voltage_(v)": db.reference('stm32_voltage_(v)').get(),
+    "stm32_temperature_(°c)": db.reference('stm32_temperature_(°c)').get(),
+    "servo_temperature_(°c)": db.reference('servo_temperature_(°c)').get(),
+    "ultrasonic_voltage_(v)": db.reference('ultrasonic_voltage_(v)').get(),
+    "motor_driver_temperature_(°c)": db.reference('motor_driver_temperature_(°c)').get(),
+    "servo_voltage_(v)": db.reference('servo_voltage_(v)').get(),
+    "servo_vibration_(g)": db.reference('servo_vibration_(g)').get(),
+    "universal_voltage_(v)": db.reference('universal_voltage_(v)').get(),
+    "motor_driver_voltage_(v)": db.reference('motor_driver_voltage_(v)').get(),
+    "servo_motor_voltage_(v)": db.reference('servo_motor_voltage_(v)').get(),
+    "universal_motor_voltage_(v)": db.reference('universal_motor_voltage_(v)').get(),
+    "ultrasonic_signal_loss": db.reference('ultrasonic_signal_loss').get(),
+    "universal_current_(a)": db.reference('universal_current_(a)').get(),
+    "universal_motor_current_(a)": db.reference('universal_motor_current_(a)').get(),
+    "stm32_current_(a)": db.reference('stm32_current_(a)').get(),
+    "ultrasonic_temperature_": db.reference('ultrasonic_temperature_').get(),
+    "motor_driver_current_(a)": db.reference('motor_driver_current_(a)').get(),
+    "servo_motor_current_(a)": db.reference('servo_motor_current_(a)').get(),
+    "universal_noise_(db)": db.reference('universal_noise_(db)').get(),
+    "servo_current_(a)": db.reference('servo_current_(a)').get(),
+    "esp32_voltage_(v)": db.reference('esp32_voltage_(v)').get(),
+    "esp32_current_(a)": db.reference('esp32_current_(a)').get(),
+    "stm_temperature_(°c)": db.reference('stm_temperature_(°c)').get(),
+    "universal_temperature_(°c)": db.reference('universal_temperature_(°c)').get()
+}
 
+# 3. تحويل القيم إلى DataFrame
+df = pd.DataFrame([data])
+
+# 4. تحميل الموديل
+model = joblib.load("model.pkl")  # أو استخدمي pickle
+
+# 5. التنبؤ
+prediction = model.predict(df)[0]
+
+# 6. عرض النتائج في Streamlit
+st.header("🔍 نتيجة التحليل")
+
+if prediction == 1:
+    st.error("🚨 النظام يتوقع وجود مشكلة أو عطل! راجع الفني فورًا.")
+else:
+    st.success("✅ كل القيم طبيعية، لا توجد مؤشرات على الأعطال.")
+
+# 7. اختيارية: عرض القيم للشفافية
+st.subheader("📊 البيانات الحالية:")
+st.dataframe(df.T.rename(columns={0: "القيمة"}))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# عرض القيم
+st.metric(label="⛽ Fuel", value=f"{fuel}%")
+st.metric(label="🚀 Speed", value=f"{speed} كم/س")
+st.metric(label="🌡 Temp", value=f"{temp}°C")
+st.metric(label="🔋 Voltage", value=f"{voltage}V")
+
+# تجهيز البيانات للموديل
+input_data = pd.DataFrame([{
+    'fuel_level': fuel,
+    'speed': speed,
+    'engine_temperature': temp,
+    'voltage': voltage
+}])
+
+# تحميل الموديل
+model = joblib.load("model.pkl")  # أو open() + pickle.load()
+
+# عمل توقع
+prediction = model.predict(input_data)[0]
+
+# عرض التوقع
+if prediction == 1:
+    st.success("🚗 🚨 المشكلة متوقعة: فيه عطل محتمل. راجع الفني.")
+else:
+    st.info("✅ كل شيء تمام، العربية بحالة جيدة.")
