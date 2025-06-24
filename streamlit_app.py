@@ -104,19 +104,10 @@ data = {
     "stm_temperature_(°c)": db.reference('stm_temperature_(°c)').get(),
     "universal_temperature_(°c)": db.reference('universal_temperature_(°c)').get()
 }
-
-# 3. تحويل القيم إلى DataFrame
 df = pd.DataFrame([data])
-
-# 4. تحميل الموديل
-model = joblib.load("model(2).pkl")  # أو استخدمي pickle
-
-# 5. التنبؤ
+model = joblib.load("model(2).pkl")  
 prediction = model.predict(df)[0]
-
-# 6. عرض النتائج في Streamlit
 st.header("🔍 نتيجة التحليل")
-
 if prediction == 1:
     st.error("🚨 النظام يتوقع وجود مشكلة أو عطل! راجع الفني فورًا.")
 else:
