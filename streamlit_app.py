@@ -79,12 +79,13 @@ if uploaded_image is not None:
 
    
     
-cred = credentials.Certificate("predictive-maintance-data-firebase-adminsdk-fbsvc-35435ce836.json")
-firebase_admin.initialize_app(cred, {
-'databaseURL': 'https://predictive-maintance-data-default-rtdb.firebaseio.com/' 
-})
-    
-# Read data from Firebase
+if not firebase_admin._apps:
+    cred = credentials.Certificate("predictive-maintance-data-firebase-adminsdk-fbsvc-35435ce836.json")
+    firebase_admin.initialize_app(cred, {
+        'databaseURL': 'https://predictive-maintance-data-default-rtdb.firebaseio.com/'
+    })
+
+# ✅ بعدها تقري الداتا بشكل طبيعي
 fuel = db.reference('fuel_level').get()
 speed = db.reference('speed').get()
 temp = db.reference('engine_temperature').get()  
