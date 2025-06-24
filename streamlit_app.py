@@ -51,6 +51,12 @@ if not firebase_admin._apps:
     firebase_admin.initialize_app(cred, {
         'databaseURL': 'https://predictive-maintance-data-default-rtdb.firebaseio.com/'
     })
+try:
+    ref = db.reference('/')
+    test_data = ref.get()
+    st.write("اتصال ناجح:", test_data)
+except Exception as e:
+    st.error(f"فشل الاتصال: {str(e)}")
 data = {
     "esp32_temperature_(°c)": db.reference('esp32_temperature_(°c)').get(),
     "stm32_voltage_(v)": db.reference('stm32_voltage_(v)').get(),
