@@ -7,6 +7,10 @@ from firebase_admin import credentials, db
 import streamlit as st
 import cv2
 import io
+import pickle
+
+with open('model(2).pkl', 'rb') as f:
+    model = pickle.load(f)
 st.set_page_config(layout="wide")
 col1, col2 = st.columns([2, 1])  # col1 = يسار، col2 = يمين
 with col2:
@@ -105,7 +109,7 @@ data = {
     "universal_temperature_(°c)": db.reference('universal_temperature_(°c)').get()
 }
 df = pd.DataFrame([data])
-model = joblib.load("model(2).pkl")  
+ 
 prediction = model.predict(df)[0]
 st.header("🔍 نتيجة التحليل")
 if prediction == 1:
