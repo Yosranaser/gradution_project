@@ -80,12 +80,7 @@ with open('model (2).pkl', 'rb') as f:
   model = pickle.load(f)
 prediction = model.predict(df)[0]
 st.header("🔍 نتيجة التحليل")
-if prediction == 1:
-    st.error("🚨 النظام يتوقع وجود مشكلة أو عطل! راجع الفني فورًا.")
-else:
-    st.success("✅ كل القيم طبيعية، لا توجد مؤشرات على الأعطال.")
-st.subheader("📊 البيانات الحالية:")
-st.dataframe(df.T.rename(columns={0: "القيمة"}))
+
 
 
 
