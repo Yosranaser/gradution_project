@@ -44,18 +44,18 @@ if not os.path.exists('predictive-maintance-data-firebase-adminsdk-fbsvc-e6efdfd
     st.error("ملف الاعتماديات غير موجود!")
 else:
     st.success("تم العثور على ملف الاعتماديات")
-    
-if not firebase_admin._apps:
-    cred = credentials.Certificate('predictive-maintance-data-firebase-adminsdk-fbsvc-35435ce836.json')
-    firebase_admin.initialize_app(cred, {
-        'databaseURL': 'https://predictive-maintance-data-default-rtdb.firebaseio.com/'
-    })
 try:
     ref = db.reference('/')
     test_data = ref.get()
     st.write("اتصال ناجح:", test_data)
 except Exception as e:
-    st.error(f"فشل الاتصال: {str(e)}")
+    st.error(f"فشل الاتصال: {str(e)}")    
+if not firebase_admin._apps:
+    cred = credentials.Certificate('predictive-maintance-data-firebase-adminsdk-fbsvc-35435ce836.json')
+    firebase_admin.initialize_app(cred, {
+        'databaseURL': 'https://predictive-maintance-data-default-rtdb.firebaseio.com/'
+    })
+
 data = {
     "esp32_temperature_(°c)": db.reference('esp32_temperature_(°c)').get(),
     "stm32_voltage_(v)": db.reference('stm32_voltage_(v)').get(),
