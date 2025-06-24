@@ -76,35 +76,35 @@ if uploaded_image is not None:
         cap.release()       
         cv2.destroyAllWindows()
 
-if flag==1 :
+
    
     
+cred = credentials.Certificate("predictive-maintance-data-firebase-adminsdk-fbsvc-35435ce836.json")
+firebase_admin.initialize_app(cred, {
+'databaseURL': 'https://predictive-maintance-data-default-rtdb.firebaseio.com/' 
+})
     
-    
+# Read data from Firebase
+fuel = db.reference('fuel_level').get()
+speed = db.reference('speed').get()
+temp = db.reference('engine_temperature').get()  
+if flag==1 :    
     col1, col2 = st.columns(2)
     with col1:
         dashboard = st.button("👁 عرض البيانات")
     with col2:
         maintenance = st.button("🛠 صيانة")
     
- cred = credentials.Certificate("predictive-maintance-data-firebase-adminsdk-fbsvc-35435ce836.json")
-firebase_admin.initialize_app(cred, {
-    'databaseURL': 'https://predictive-maintance-data-default-rtdb.firebaseio.com/' 
-})
+
     
-    # Read data from Firebase
-    fuel = db.reference('fuel_level').get()
-    speed = db.reference('speed').get()
-    temp = db.reference('engine_temperature').get()
+ if dashboard:
+     st.success("هندخلك على عرض البيانات...")
+     st.write("هنا هنوريك البنزين، السرعة، الفولت، ودرجة الحرارة.")
+     st.metric(label="🚀 السرعة", value=f"{speed} كم/س")
+     st.metric(label="⛽ نسبة البنزين", value=f"{fuel}%")
+     st.metric(label="🌡 درجة حرارة المحرك", value=f"{temp}°C")
     
-    if dashboard:
-        st.success("هندخلك على عرض البيانات...")
-        st.write("هنا هنوريك البنزين، السرعة، الفولت، ودرجة الحرارة.")
-        st.metric(label="🚀 السرعة", value=f"{speed} كم/س")
-        st.metric(label="⛽ نسبة البنزين", value=f"{fuel}%")
-        st.metric(label="🌡 درجة حرارة المحرك", value=f"{temp}°C")
-    
-        if temp > 100:
+      if temp > 100:
             st.error("⚠ درجة حرارة المحرك عالية جدًا! راجع الفني فورًا.")
     
     elif maintenance:
