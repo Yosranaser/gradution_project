@@ -123,22 +123,3 @@ st.dataframe(df.T.rename(columns={0: "القيمة"}))
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
