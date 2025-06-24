@@ -4,7 +4,6 @@ import numpy as np
 from PIL import Image
 import firebase_admin
 from firebase_admin import credentials, db
-import streamlit as st
 import cv2
 import io
 import pickle
