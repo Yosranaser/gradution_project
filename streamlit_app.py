@@ -10,7 +10,7 @@ import pickle
 
 
 st.set_page_config(layout="wide")
-col1, col2 = st.columns([2, 1])  # col1 = يسار، col2 = يمين
+col1, col2 = st.columns([2, 1])  
 with col2:
     st.markdown("""
     <div style="background-color:#f2f2f2; padding:25px; border-radius:15px; text-align:right; direction:rtl;">
@@ -35,44 +35,13 @@ with col2:
 
 
      
-ref1 = cv2.imread("yossra.jpg", 0)
-ref2 = cv2.imread("shorouk2.jpg", 0)
-flag=0
-uploaded_image = st.camera_input("Take your picture")
-if uploaded_image is not None:
-    user_img = Image.open(io.BytesIO(uploaded_image.read())).convert("L")
-    user_img_np = np.array(user_img)
-
-    
-    orb = cv2.ORB_create()
-    kp1, des1 = orb.detectAndCompute(user_img_np, None)
-    kp2, des2 = orb.detectAndCompute(ref1, None)
-    kp3, des3 = orb.detectAndCompute(ref2, None)
-
-    bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
-    matches1 = bf.match(des1, des2)
-    matches2 = bf.match(des1, des3)
-
-    score1 = len(matches1)
-    score2 = len(matches2)
-
-    if score1 > score2 and score1 > 20:
-        st.success("✅ Face matched with yossra ")
-        st.image("yossra.jpg", caption="yossra naser has sussessifully logged in")
-        flag=1
-    elif score2 > score1 and score2 > 20:
-        flag=1
-        st.success("✅ Face matched with shorouk")
-        st.image("shorouk2.jpg", caption="shorouk ahmed has sussessifully logged in ")
-        
-    else:
-        st.error("❌ Face not recognized")
-        flag=0
-        cap.release()       
-        cv2.destroyAllWindows()
 
 
-   
+
+
+
+cred = credentials.Certificate("path/to/serviceAccountKey.json")
+firebase_admin.initialize_app(cred)
     
 if not firebase_admin._apps:
     cred = credentials.Certificate('predictive-maintance-data-firebase-adminsdk-fbsvc-e6efdfda3e.json')
