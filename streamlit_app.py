@@ -40,9 +40,7 @@ with col2:
 
 
 
-cred = credentials.Certificate("path/to/serviceAccountKey.json")
-firebase_admin.initialize_app(cred)
-    
+
 if not firebase_admin._apps:
     cred = credentials.Certificate('predictive-maintance-data-firebase-adminsdk-fbsvc-e6efdfda3e.json')
     firebase_admin.initialize_app(cred, {
