@@ -85,30 +85,3 @@ if not firebase_admin._apps:
         'databaseURL': 'https://predictive-maintance-data-default-rtdb.firebaseio.com/'
     })
 
-# ✅ بعدها تقري الداتا بشكل طبيعي
-fuel = db.reference('fuel_level').get()
-speed = db.reference('speed').get()
-temp = db.reference('engine_temperature').get()  
-if flag==1 :    
-    col1, col2 = st.columns(2)
-    with col1:
-        dashboard = st.button("👁 عرض البيانات")
-    with col2:
-        maintenance = st.button("🛠 صيانة")
-    
-
-    
-if dashboard:
-    st.success("هندخلك على عرض البيانات...")
-    st.write("هنا هنوريك البنزين، السرعة، الفولت، ودرجة الحرارة.")
-
-    st.metric(label="🚀 السرعة", value=f"{speed} كم/س")
-    st.metric(label="⛽ نسبة البنزين", value=f"{fuel}%")
-    st.metric(label="🌡 درجة حرارة المحرك", value=f"{temp}°C")
-
-    if temp > 100:
-        st.error("⚠ درجة حرارة المحرك عالية جدًا! راجع الفني فورًا.")
-
-elif maintenance:
-    st.success("هندخلك على صفحة الصيانة...")
-    st.write("هنا هنعرض لك حالة كل جزء في العربية، وهل محتاج يتصلح ولا تمام.")
