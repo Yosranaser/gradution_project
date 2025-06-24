@@ -87,22 +87,7 @@ if flag==1 :
     with col2:
         maintenance = st.button("🛠 صيانة")
     
-    try:
-        if not firebase_admin._apps:
-            cred = credentials.Certificate("predictive-maintance-data-firebase-adminsdk-fbsvc-e6efdfda3e.json")
-            firebase_admin.initialize_app(cred, {
-                'databaseURL': 'https://predictive-maintance-data-default-rtdb.firebaseio.com/'
-            })
-
-        fuel = db.reference('fuel_level').get()
-        print("Fuel Level:", fuel)
-    
-    except RefreshError as e:
-        st.error("فشل في المصادقة مع Google. تأكد من اتصال الإنترنت وصحة ملف الخدمة.")
-        st.stop()
-    except Exception as e:
-        st.error(f"حدث خطأ آخر: {e}")
-        st.stop()
+ 
     
     # Read data from Firebase
     fuel = db.reference('fuel_level').get()
