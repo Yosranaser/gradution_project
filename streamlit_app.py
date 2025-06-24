@@ -109,7 +109,7 @@ data = {
 df = pd.DataFrame([data])
 
 # 4. تحميل الموديل
-model = joblib.load("model.pkl")  # أو استخدمي pickle
+model = joblib.load("model(2).pkl")  # أو استخدمي pickle
 
 # 5. التنبؤ
 prediction = model.predict(df)[0]
@@ -159,28 +159,4 @@ st.dataframe(df.T.rename(columns={0: "القيمة"}))
 
 
 
-# عرض القيم
-st.metric(label="⛽ Fuel", value=f"{fuel}%")
-st.metric(label="🚀 Speed", value=f"{speed} كم/س")
-st.metric(label="🌡 Temp", value=f"{temp}°C")
-st.metric(label="🔋 Voltage", value=f"{voltage}V")
 
-# تجهيز البيانات للموديل
-input_data = pd.DataFrame([{
-    'fuel_level': fuel,
-    'speed': speed,
-    'engine_temperature': temp,
-    'voltage': voltage
-}])
-
-# تحميل الموديل
-model = joblib.load("model.pkl")  # أو open() + pickle.load()
-
-# عمل توقع
-prediction = model.predict(input_data)[0]
-
-# عرض التوقع
-if prediction == 1:
-    st.success("🚗 🚨 المشكلة متوقعة: فيه عطل محتمل. راجع الفني.")
-else:
-    st.info("✅ كل شيء تمام، العربية بحالة جيدة.")
