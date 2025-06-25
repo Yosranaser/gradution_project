@@ -33,11 +33,10 @@ with col2:
 uploaded_file = st.file_uploader("Upload your Firebase serviceAccountKey.json", type="json")
 
 if uploaded_file is not None:
-    # تحميل محتوى الملف مؤقتاً
+   
     with open("temp_firebase_key.json", "wb") as f:
         f.write(uploaded_file.getbuffer())
 
-    # إعداد الاتصال بـ Firebase
     cred = credentials.Certificate("temp_firebase_key.json")
     firebase_admin.initialize_app(cred, {
         'databaseURL': 'https://predictive-maintance-data-default-rtdb.firebaseio.com'
