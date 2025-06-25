@@ -33,14 +33,8 @@ with col2:
  
 
 firebase_key = os.getenv("FIREBASE_KEY")
-
-# تحويل النص إلى ديكشنري
 cred_dict = json.loads(firebase_key)
-
-# إعداد الاعتماد
 cred = credentials.Certificate(cred_dict)
-
-# تهيئة الاتصال بـ Firebase
 firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://predictive-maintance-data-default-rtdb.firebaseio.com/'
 })
