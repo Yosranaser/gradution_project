@@ -32,12 +32,9 @@ with col2:
     """, unsafe_allow_html=True)
  
 
-
-
-
 cred = credentials.Certificate("predictive-maintance-data-firebase-adminsdk-fbsvc-e6efdfda3e.json")
 firebase_admin.initialize_app(cred, {
-    'databaseURL': 'https://predictive-maintance-data-default-rtdb.firebaseio.com/'
+    'databaseURL':'https://predictive-maintance-data-default-rtdb.firebaseio.com/'
 })
 
 data = {
