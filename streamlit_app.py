@@ -32,9 +32,9 @@ with col2:
     """, unsafe_allow_html=True)
  
 if not firebase_admin._apps:
-   cred = credentials.Certificate('predictive-maintance-data-firebase-adminsdk-fbsvc-35435ce836.json')
+   cred = credentials.Certificate('car-data-9c9fc-firebase-adminsdk-fbsvc-505e36329f.json')
    firebase_admin.initialize_app(cred, {
-   'databaseURL': 'https://predictive-maintance-data-default-rtdb.firebaseio.com/'
+   'databaseURL': 'https://car-data-9c9fc-default-rtdb.firebaseio.com/'
    })
 
 data = {
