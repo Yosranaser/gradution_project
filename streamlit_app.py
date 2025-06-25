@@ -43,8 +43,6 @@ cred = credentials.Certificate(cred_dict)
 firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://predictive-maintance-data.firebaseio.com/'
 })
-
-
 data = {
     "esp32_temperature_(°c)": db.reference('esp32_temperature_(°c)').get(),
     "stm32_voltage_(v)": db.reference('stm32_voltage_(v)').get(),
