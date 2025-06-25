@@ -33,8 +33,7 @@ with col2:
  
 
 
-import firebase_admin
-from firebase_admin import credentials, db
+
 
 cred = credentials.Certificate("predictive-maintance-data-firebase-adminsdk-fbsvc-e6efdfda3e.json")
 firebase_admin.initialize_app(cred, {
