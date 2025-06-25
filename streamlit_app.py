@@ -37,11 +37,11 @@ if not firebase_admin._apps:
     initialize_app(cred, {
         'databaseURL': 'https://predictive-maintance-data-default-rtdb.firebaseio.com/'
     })    
-#if not firebase_admin._apps:
-#    cred = credentials.Certificate('predictive-maintance-data-firebase-adminsdk-fbsvc-35435ce836.json')
-#    firebase_admin.initialize_app(cred, {
-#        'databaseURL': 'https://predictive-maintance-data-default-rtdb.firebaseio.com/'
-#   })
+if not firebase_admin._apps:
+   cred = credentials.Certificate('predictive-maintance-data-firebase-adminsdk-fbsvc-35435ce836.json')
+   firebase_admin.initialize_app(cred, {
+   'databaseURL': 'https://predictive-maintance-data-default-rtdb.firebaseio.com/'
+   })
 
 data = {
     "esp32_temperature_(°c)": db.reference('esp32_temperature_(°c)').get(),
