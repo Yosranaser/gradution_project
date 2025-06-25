@@ -32,10 +32,6 @@ with col2:
     """, unsafe_allow_html=True)
  
 
-import os
-import json
-import firebase_admin
-from firebase_admin import credentials, db
 
 firebase_key = os.getenv("FIREBASE_KEY")
 if firebase_key is None:
