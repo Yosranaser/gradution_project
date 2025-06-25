@@ -40,7 +40,7 @@ if uploaded_file is not None:
 
     if not firebase_admin._apps:
         firebase_admin.initialize_app(cred, {
-            'databaseURL': 'https://car-data-9c9fc-default-rtdb.firebaseio.com/'
+            'databaseURL':'https://car-data-9c9fc-default-rtdb.firebaseio.com/'
         })
 
     st.success("✅ Firebase Connected Successfully!")
