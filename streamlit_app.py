@@ -36,14 +36,14 @@ if uploaded_file is not None:
     with open("temp_firebase_key.json", "wb") as f:
         f.write(uploaded_file.getbuffer())
 
-    cred = credentials.Certificate("temp_firebase_key.json")
+cred = credentials.Certificate("temp_firebase_key.json")
 
-    if not firebase_admin._apps:
+if not firebase_admin._apps:
         firebase_admin.initialize_app(cred, {
             'databaseURL':'https://console.firebase.google.com/project/car-data-9c9fc/database/car-data-9c9fc-default-rtdb/data'
         })
 
-    st.success("✅ Firebase Connected Successfully!")
+st.success("✅ Firebase Connected Successfully!")
 
    
 esp32_temperature = db.reference('esp32_temperature_(°c)').get()
