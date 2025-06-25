@@ -33,7 +33,7 @@ with col2:
  
 
 firebase_key = os.getenv("FIREBASE_KEY")
-
+st.write(firebase_key)
 if firebase_key is None:
     raise ValueError("FIREBASE_KEY not found. Check your GitHub Secrets!")
 
