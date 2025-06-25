@@ -30,11 +30,22 @@ with col2:
         <p style="font-size:17px; color:#d62728;"><b>📷 ولكن يجب التحقق من الشخصية أولاً. التقط صورة لك.</b></p>
     </div>
     """, unsafe_allow_html=True)
-cred = credentials.Certificate("predictive-maintance-data-firebase-adminsdk-fbsvc-35435ce836.json")
-if not firebase_admin._apps:
+uploaded_file = st.file_uploader("Upload your Firebase serviceAccountKey.json", type="json")
+
+if uploaded_file is not None:
+    # تحميل محتوى الملف مؤقتاً
+    with open("temp_firebase_key.json", "wb") as f:
+        f.write(uploaded_file.getbuffer())
+
+    # إعداد الاتصال بـ Firebase
+    cred = credentials.Certificate("temp_firebase_key.json")
     firebase_admin.initialize_app(cred, {
-        'databaseURL':'https://predictive-maintance-data-default-rtdb.firebaseio.com/'
+        'databaseURL': 'https://predictive-maintance-data-default-rtdb.firebaseio.com'
     })
+
+    st.success("✅ Firebase Connected Successfully!")
+
+    # 🔥 هنا حطي كودك للتعامل مع Firebase
 
 data = {
     "esp32_temperature_(°c)": db.reference('esp32_temperature_(°c)').get(),
