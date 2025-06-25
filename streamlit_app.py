@@ -46,33 +46,32 @@ if uploaded_file is not None:
     st.success("✅ Firebase Connected Successfully!")
 
    
-data = {
-        "esp32_temperature_(°c)": db.reference('esp32_temperature_(°c)').get(),
-        "stm32_voltage_(v)": db.reference('stm32_voltage_(v)').get(),
-        "stm32_temperature_(°c)": db.reference('stm32_temperature_(°c)').get(),
-        "servo_temperature_(°c)": db.reference('servo_temperature_(°c)').get(),
-        "ultrasonic_voltage_(v)": db.reference('ultrasonic_voltage_(v)').get(),
-        "motor_driver_temperature_(°c)": db.reference('motor_driver_temperature_(°c)').get(),
-        "servo_voltage_(v)": db.reference('servo_voltage_(v)').get(),
-        "servo_vibration_(g)": db.reference('servo_vibration_(g)').get(),
-        "universal_voltage_(v)": db.reference('universal_voltage_(v)').get(),
-        "motor_driver_voltage_(v)": db.reference('motor_driver_voltage_(v)').get(),
-        "servo_motor_voltage_(v)": db.reference('servo_motor_voltage_(v)').get(),
-        "universal_motor_voltage_(v)": db.reference('universal_motor_voltage_(v)').get(),
-        "ultrasonic_signal_loss": db.reference('ultrasonic_signal_loss').get(),
-        "universal_current_(a)": db.reference('universal_current_(a)').get(),
-        "universal_motor_current_(a)": db.reference('universal_motor_current_(a)').get(),
-        "stm32_current_(a)": db.reference('stm32_current_(a)').get(),
-        "ultrasonic_temperature_": db.reference('ultrasonic_temperature_').get(),
-        "motor_driver_current_(a)": db.reference('motor_driver_current_(a)').get(),
-        "servo_motor_current_(a)": db.reference('servo_motor_current_(a)').get(),
-        "universal_noise_(db)": db.reference('universal_noise_(db)').get(),
-        "servo_current_(a)": db.reference('servo_current_(a)').get(),
-        "esp32_voltage_(v)": db.reference('esp32_voltage_(v)').get(),
-        "esp32_current_(a)": db.reference('esp32_current_(a)').get(),
-        "stm_temperature_(°c)": db.reference('stm_temperature_(°c)').get(),
-        "universal_temperature_(°c)": db.reference('universal_temperature_(°c)').get()
-    }
+"esp32_temperature_(°c)"= db.reference('esp32_temperature_(°c)').get(),
+"stm32_voltage_(v)"= db.reference('stm32_voltage_(v)').get(),
+"stm32_temperature_(°c)"= db.reference('stm32_temperature_(°c)').get(),
+"servo_temperature_(°c)"= db.reference('servo_temperature_(°c)').get(),
+"ultrasonic_voltage_(v)"= db.reference('ultrasonic_voltage_(v)').get(),
+"motor_driver_temperature_(°c)"= db.reference('motor_driver_temperature_(°c)').get(),
+"servo_voltage_(v)"= db.reference('servo_voltage_(v)').get(),
+ "servo_vibration_(g)"= db.reference('servo_vibration_(g)').get(),
+"universal_voltage_(v)"= db.reference('universal_voltage_(v)').get(),
+"motor_driver_voltage_(v)"= db.reference('motor_driver_voltage_(v)').get(),
+"servo_motor_voltage_(v)"= db.reference('servo_motor_voltage_(v)').get(),
+"universal_motor_voltage_(v)"= db.reference('universal_motor_voltage_(v)').get(),
+"ultrasonic_signal_loss"= db.reference('ultrasonic_signal_loss').get(),
+"universal_current_(a)"= db.reference('universal_current_(a)').get(),
+"universal_motor_current_(a)"= db.reference('universal_motor_current_(a)').get(),
+"stm32_current_(a)"= db.reference('stm32_current_(a)').get(),
+"ultrasonic_temperature_"= db.reference('ultrasonic_temperature_').get(),
+"motor_driver_current_(a)"= db.reference('motor_driver_current_(a)').get(),
+"servo_motor_current_(a)"= db.reference('servo_motor_current_(a)').get(),
+"universal_noise_(db)"= db.reference('universal_noise_(db)').get(),
+"servo_current_(a)"= db.reference('servo_current_(a)').get(),
+"esp32_voltage_(v)"=db.reference('esp32_voltage_(v)').get(),
+"esp32_current_(a)"= db.reference('esp32_current_(a)').get(),
+"stm_temperature_(°c)"= db.reference('stm_temperature_(°c)').get(),
+"universal_temperature_(°c)"= db.reference('universal_temperature_(°c)').get()
+    
 
 df = pd.DataFrame([data])
 
