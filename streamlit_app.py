@@ -72,46 +72,46 @@ if not firebase_admin._apps:
     stm_temperature = db.reference('stm_temperature_(°c)').get()
     universal_temperature = db.reference('universal_temperature_(°c)').get()
     try:
-    data = {
-        "esp32_temperature_(°c)": db.reference('esp32_temperature_(°c)').get(),
-        "stm32_voltage_(v)": db.reference('stm32_voltage_(v)').get(),
-        "stm32_temperature_(°c)": db.reference('stm32_temperature_(°c)').get(),
-        "servo_temperature_(°c)": db.reference('servo_temperature_(°c)').get(),
-        "ultrasonic_voltage_(v)": db.reference('ultrasonic_voltage_(v)').get(),
-        "motor_driver_temperature_(°c)": db.reference('motor_driver_temperature_(°c)').get(),
-        "servo_voltage_(v)": db.reference('servo_voltage_(v)').get(),
-        "servo_vibration_(g)": db.reference('servo_vibration_(g)').get(),
-        "universal_voltage_(v)": db.reference('universal_voltage_(v)').get(),
-        "motor_driver_voltage_(v)": db.reference('motor_driver_voltage_(v)').get(),
-        "servo_motor_voltage_(v)": db.reference('servo_motor_voltage_(v)').get(),
-        "universal_motor_voltage_(v)": db.reference('universal_motor_voltage_(v)').get(),
-        "ultrasonic_signal_loss": db.reference('ultrasonic_signal_loss').get(),
-        "universal_current_(a)": db.reference('universal_current_(a)').get(),
-        "universal_motor_current_(a)": db.reference('universal_motor_current_(a)').get(),
-        "stm32_current_(a)": db.reference('stm32_current_(a)').get(),
-        "ultrasonic_temperature_": db.reference('ultrasonic_temperature_').get(),
-        "motor_driver_current_(a)": db.reference('motor_driver_current_(a)').get(),
-        "servo_motor_current_(a)": db.reference('servo_motor_current_(a)').get(),
-        "universal_noise_(db)": db.reference('universal_noise_(db)').get(),
-        "servo_current_(a)": db.reference('servo_current_(a)').get(),
-        "esp32_voltage_(v)": db.reference('esp32_voltage_(v)').get(),
-        "esp32_current_(a)": db.reference('esp32_current_(a)').get(),
-        "stm_temperature_(°c)": db.reference('stm_temperature_(°c)').get(),
-        "universal_temperature_(°c)": db.reference('universal_temperature_(°c)').get()
-    }
-
-    df = pd.DataFrame([data])
-    st.dataframe(df)
-
-    except Exception as e:
-        st.error(f"❌ Error fetching data: {e}")
+        data = {
+            "esp32_temperature_(°c)": db.reference('esp32_temperature_(°c)').get(),
+            "stm32_voltage_(v)": db.reference('stm32_voltage_(v)').get(),
+            "stm32_temperature_(°c)": db.reference('stm32_temperature_(°c)').get(),
+            "servo_temperature_(°c)": db.reference('servo_temperature_(°c)').get(),
+            "ultrasonic_voltage_(v)": db.reference('ultrasonic_voltage_(v)').get(),
+            "motor_driver_temperature_(°c)": db.reference('motor_driver_temperature_(°c)').get(),
+            "servo_voltage_(v)": db.reference('servo_voltage_(v)').get(),
+            "servo_vibration_(g)": db.reference('servo_vibration_(g)').get(),
+            "universal_voltage_(v)": db.reference('universal_voltage_(v)').get(),
+            "motor_driver_voltage_(v)": db.reference('motor_driver_voltage_(v)').get(),
+            "servo_motor_voltage_(v)": db.reference('servo_motor_voltage_(v)').get(),
+            "universal_motor_voltage_(v)": db.reference('universal_motor_voltage_(v)').get(),
+            "ultrasonic_signal_loss": db.reference('ultrasonic_signal_loss').get(),
+            "universal_current_(a)": db.reference('universal_current_(a)').get(),
+            "universal_motor_current_(a)": db.reference('universal_motor_current_(a)').get(),
+            "stm32_current_(a)": db.reference('stm32_current_(a)').get(),
+            "ultrasonic_temperature_": db.reference('ultrasonic_temperature_').get(),
+            "motor_driver_current_(a)": db.reference('motor_driver_current_(a)').get(),
+            "servo_motor_current_(a)": db.reference('servo_motor_current_(a)').get(),
+            "universal_noise_(db)": db.reference('universal_noise_(db)').get(),
+            "servo_current_(a)": db.reference('servo_current_(a)').get(),
+            "esp32_voltage_(v)": db.reference('esp32_voltage_(v)').get(),
+            "esp32_current_(a)": db.reference('esp32_current_(a)').get(),
+            "stm_temperature_(°c)": db.reference('stm_temperature_(°c)').get(),
+            "universal_temperature_(°c)": db.reference('universal_temperature_(°c)').get()
+        }
     
-    # ✅ تحميل النموذج
-    with open('model.pkl', 'rb') as file:
-        model = pickle.load(file)
+        df = pd.DataFrame([data])
+        st.dataframe(df)
     
-    # ✅ التنبؤ
-    if st.button("🔍 Predict Status"):
-        prediction = model.predict(df)[0]
-        st.subheader(f"⚙️ Prediction Result: **{prediction}**")
+        except Exception as e:
+            st.error(f"❌ Error fetching data: {e}")
         
+        # ✅ تحميل النموذج
+        with open('model.pkl', 'rb') as file:
+            model = pickle.load(file)
+        
+        # ✅ التنبؤ
+        if st.button("🔍 Predict Status"):
+            prediction = model.predict(df)[0]
+            st.subheader(f"⚙️ Prediction Result: **{prediction}**")
+            
