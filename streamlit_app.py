@@ -45,8 +45,8 @@ if uploaded_file is not None:
 
     st.success("✅ Firebase Connected Successfully!")
 
-    # قراءة البيانات من Firebase
-    data = {
+   
+data = {
         "esp32_temperature_(°c)": db.reference('esp32_temperature_(°c)').get(),
         "stm32_voltage_(v)": db.reference('stm32_voltage_(v)').get(),
         "stm32_temperature_(°c)": db.reference('stm32_temperature_(°c)').get(),
@@ -74,16 +74,16 @@ if uploaded_file is not None:
         "universal_temperature_(°c)": db.reference('universal_temperature_(°c)').get()
     }
 
-    df = pd.DataFrame([data])
+df = pd.DataFrame([data])
 
-    # تحميل الموديل
-    with open('model (2).pkl', 'rb') as f:
+
+with open('model (2).pkl', 'rb') as f:
         model = pickle.load(f)
 
-    prediction = model.predict(df)[0]
+ prediction = model.predict(df)[0]
 
-    st.header("🔍 نتيجة التحليل")
-    if prediction == 1:
+st.header("🔍 نتيجة التحليل")
+if prediction == 1:
         st.error("🚨 النظام يتوقع وجود مشكلة أو عطل! راجع الفني فورًا.")
     else:
         st.success("✅ كل القيم طبيعية، لا توجد مؤشرات على الأعطال.")
