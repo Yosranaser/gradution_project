@@ -33,7 +33,12 @@ with col2:
  
 
 firebase_key = os.getenv("FIREBASE_KEY")
+
+if firebase_key is None:
+    raise ValueError("FIREBASE_KEY not found. Check your GitHub Secrets!")
+
 cred_dict = json.loads(firebase_key)
+
 cred = credentials.Certificate(cred_dict)
 firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://predictive-maintance-data-default-rtdb.firebaseio.com/'
