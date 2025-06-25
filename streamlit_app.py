@@ -100,13 +100,13 @@ if not firebase_admin._apps:
             "universal_temperature_(°c)": db.reference('universal_temperature_(°c)').get()
         }
     
-df = pd.DataFrame([data])
-st.dataframe(df)
-with open('model (2).pkl', 'rb') as file:
-   model = pickle.load(file)
-        
-      
-if st.button("🔍 Predict Status"):
-    prediction = model.predict(df)[0]
-    st.subheader(f"⚙️ Prediction Result: **{prediction}**")
+    df = pd.DataFrame([data])
+    st.dataframe(df)
+    with open('model (2).pkl', 'rb') as file:
+       model = pickle.load(file)
             
+          
+    if st.button("🔍 Predict Status"):
+        prediction = model.predict(df)[0]
+        st.subheader(f"⚙️ Prediction Result: **{prediction}**")
+                
