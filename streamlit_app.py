@@ -103,11 +103,10 @@ if not firebase_admin._apps:
         df = pd.DataFrame([data])
         st.dataframe(df)
     
-        except Exception as e:
-            st.error(f"❌ Error fetching data: {e}")
+       
         
         # ✅ تحميل النموذج
-        with open('model.pkl', 'rb') as file:
+        with open('model (2).pkl', 'rb') as file:
             model = pickle.load(file)
         
         # ✅ التنبؤ
