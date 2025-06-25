@@ -1,0 +1,2 @@
+env:
+  FIREBASE_KEY: ${{ secrets.FIREBASE_KEY }}
