@@ -31,11 +31,19 @@ with col2:
     </div>
     """, unsafe_allow_html=True)
  
-if not firebase_admin._apps:
-   cred = credentials.Certificate('car-data-9c9fc-firebase-adminsdk-fbsvc-1288ad36a6.json')
-   firebase_admin.initialize_app(cred, {
-   'databaseURL': 'https://car-data-9c9fc-default-rtdb.firebaseio.com/'
-   })
+
+firebase_key = os.getenv("FIREBASE_KEY")
+
+# تحويل النص إلى ديكشنري
+cred_dict = json.loads(firebase_key)
+
+# إعداد الاعتماد
+cred = credentials.Certificate(cred_dict)
+
+# تهيئة الاتصال بـ Firebase
+firebase_admin.initialize_app(cred, {
+    'databaseURL': 'https://predictive-maintance-data-default-rtdb.firebaseio.com/'
+})
 
 data = {
     "esp32_temperature_(°c)": db.reference('esp32_temperature_(°c)').get(),
