@@ -32,7 +32,7 @@ with col2:
     """, unsafe_allow_html=True)
  
 if not firebase_admin._apps:
-   cred = credentials.Certificate('car-data-9c9fc-firebase-adminsdk-fbsvc-505e36329f.json')
+   cred = credentials.Certificate('car-data-9c9fc-firebase-adminsdk-fbsvc-1288ad36a6.json')
    firebase_admin.initialize_app(cred, {
    'databaseURL': 'https://car-data-9c9fc-default-rtdb.firebaseio.com/'
    })
