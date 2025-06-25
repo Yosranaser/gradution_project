@@ -33,16 +33,14 @@ with col2:
  
 
 
-firebase_key = os.getenv("FIREBASE_KEY")
-if firebase_key is None:
-    raise ValueError("FIREBASE_KEY not found. Check your GitHub Secrets!")
+import firebase_admin
+from firebase_admin import credentials, db
 
-cred_dict = json.loads(firebase_key)
-cred = credentials.Certificate(cred_dict)
-
+cred = credentials.Certificate("predictive-maintance-data-firebase-adminsdk-fbsvc-e6efdfda3e.json")
 firebase_admin.initialize_app(cred, {
-    'databaseURL': 'https://predictive-maintance-data.firebaseio.com/'
+    'databaseURL': 'https://predictive-maintance-data-default-rtdb.firebaseio.com/'
 })
+
 data = {
     "esp32_temperature_(°c)": db.reference('esp32_temperature_(°c)').get(),
     "stm32_voltage_(v)": db.reference('stm32_voltage_(v)').get(),
