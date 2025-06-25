@@ -32,19 +32,6 @@ with col2:
     """, unsafe_allow_html=True)
 
 
-
-     
-
-
-
-
-
-firebase_secret = st.secrets["FIREBASE_CREDENTIALS"]
-
-
-cred_dict = json.loads(firebase_secret)
-
-
 if not firebase_admin._apps:
     cred = credentials.Certificate(cred_dict)
     initialize_app(cred, {
