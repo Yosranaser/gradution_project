@@ -30,12 +30,11 @@ with col2:
         <p style="font-size:17px; color:#d62728;"><b>📷 ولكن يجب التحقق من الشخصية أولاً. التقط صورة لك.</b></p>
     </div>
     """, unsafe_allow_html=True)
- 
-
 cred = credentials.Certificate("predictive-maintance-data-firebase-adminsdk-fbsvc-e6efdfda3e.json")
-firebase_admin.initialize_app(cred, {
-    'databaseURL':'https://predictive-maintance-data-default-rtdb.firebaseio.com/'
-})
+if not firebase_admin._apps:
+    firebase_admin.initialize_app(cred, {
+        'databaseURL':'https://predictive-maintance-data-default-rtdb.firebaseio.com/'
+    })
 
 data = {
     "esp32_temperature_(°c)": db.reference('esp32_temperature_(°c)').get(),
