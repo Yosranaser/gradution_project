@@ -39,9 +39,6 @@ sheet_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=cs
 df = pd.read_csv(sheet_url)
 st.title("📊 بيانات السيارة من Google Sheet")
 st.dataframe(df)
-
-
-
 with open('model (2).pkl', 'rb') as file:
     model = joblib.load(file)
 if st.button("🔍 Predict"):
