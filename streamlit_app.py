@@ -9,6 +9,8 @@ import io
 import pickle
 import json
 import pandas as pd
+import xgboost as xgb
+import joblib
 st.set_page_config(layout="wide")
 col1, col2 = st.columns([2, 1])  
 with col2:
@@ -37,8 +39,11 @@ sheet_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=cs
 df = pd.read_csv(sheet_url)
 st.title("📊 بيانات السيارة من Google Sheet")
 st.dataframe(df)
+
+
+
 with open('model (2).pkl', 'rb') as file:
-    model = pickle.load(file)
+    model = joblib.load(file)
 if st.button("🔍 Predict"):
     prediction = model.predict(df)[0]
     st.subheader(f"⚙️ Prediction Result: **{prediction}**")
