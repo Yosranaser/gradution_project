@@ -49,9 +49,9 @@ st.dataframe(df)
 # مثال لو عندك موديل ML:
 # مع افتراض أن عندك model.pkl محفوظ معاك
 
-import pickle
 
-with open('model.pkl', 'rb') as file:
+
+with open('model (2).pkl', 'rb') as file:
     model = pickle.load(file)
 
 # زر للتنبؤ
@@ -59,7 +59,6 @@ if st.button("🔍 Predict"):
     prediction = model.predict(df)[0]
     st.subheader(f"⚙️ Prediction Result: **{prediction}**")
 
-            st.subheader(f"⚙️ Prediction Result: **{prediction}**")
+            
 
-    except Exception as e:
-        st.error(f"❌ Error: {e}")
+    
