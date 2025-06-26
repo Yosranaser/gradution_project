@@ -4,6 +4,7 @@ numpy
 Pillow
 firebase-admin
 xgboost
+joblib
 
 
 
