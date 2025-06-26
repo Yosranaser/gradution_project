@@ -40,7 +40,7 @@ df = pd.read_csv(sheet_url)
 st.title("📊 بيانات السيارة من Google Sheet")
 st.dataframe(df)
 with open('model (2).pkl', 'rb') as file:
-    model = joblib.load(file)
+   model = pickle.load(file)
 if st.button("🔍 Predict"):
     prediction = model.predict(df)[0]
     st.subheader(f"⚙️ Prediction Result: **{prediction}**")
