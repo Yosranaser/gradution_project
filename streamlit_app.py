@@ -30,6 +30,8 @@ with col2:
         <p style="font-size:17px; color:#d62728;"><b>📷 ولكن يجب التحقق من الشخصية أولاً. التقط صورة لك.</b></p>
     </div>
     """, unsafe_allow_html=True)
+
+
 uploaded_file = st.file_uploader("⬆️ Upload your data file (CSV or Excel)", type=['csv', 'xlsx'])
 
 if uploaded_file is not None:
