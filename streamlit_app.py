@@ -32,26 +32,33 @@ with col2:
     """, unsafe_allow_html=True)
 
 
-uploaded_file = st.file_uploader("⬆️ Upload your data file (CSV or Excel)", type=['csv', 'xlsx'])
 
-if uploaded_file is not None:
-    try:
-        if uploaded_file.name.endswith('.csv'):
-            df = pd.read_csv(uploaded_file)
-        else:
-            df = pd.read_excel(uploaded_file)
-        
-        st.success("✅ Data uploaded successfully!")
-        st.subheader("📊 Uploaded Data")
-        st.dataframe(df)
 
-        # ✅ تحميل النموذج المدرب
-        with open('model (2).pkl', 'rb') as f:
-            model = pickle.load(f)
+# رابط الشيت
+sheet_id = "10GFBlxh8nNU-yIe7_UH0O6UDqW4Uv_fc0zNR_xC_O00"
+sheet_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv"
 
-        # ✅ التنبؤ
-        if st.button("🔍 Predict Car Status"):
-            prediction = model.predict(df)[0]
+# قراءة البيانات
+df = pd.read_csv(sheet_url)
+
+st.title("📊 بيانات السيارة من Google Sheet")
+
+# عرض البيانات
+st.dataframe(df)
+
+# مثال لو عندك موديل ML:
+# مع افتراض أن عندك model.pkl محفوظ معاك
+
+import pickle
+
+with open('model.pkl', 'rb') as file:
+    model = pickle.load(file)
+
+# زر للتنبؤ
+if st.button("🔍 Predict"):
+    prediction = model.predict(df)[0]
+    st.subheader(f"⚙️ Prediction Result: **{prediction}**")
+
             st.subheader(f"⚙️ Prediction Result: **{prediction}**")
 
     except Exception as e:
