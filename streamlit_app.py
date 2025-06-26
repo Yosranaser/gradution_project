@@ -110,5 +110,5 @@ if not firebase_admin._apps:
             prediction = model.predict(df)[0]
             st.subheader(f"⚙️ Prediction Result: **{prediction}**")
     except Exception as e:
-    st.error(f"❌ حدث خطأ أثناء جلب البيانات أو التنبؤ: {e}")
+        st.error(f"❌ حدث خطأ أثناء جلب البيانات أو التنبؤ: {e}")
                 
