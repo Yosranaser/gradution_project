@@ -32,30 +32,13 @@ with col2:
     </div>
     """, unsafe_allow_html=True)
 
-
-
-
-# رابط الشيت
 sheet_id = "10GFBlxh8nNU-yIe7_UH0O6UDqW4Uv_fc0zNR_xC_O00"
 sheet_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv"
-
-# قراءة البيانات
 df = pd.read_csv(sheet_url)
-
 st.title("📊 بيانات السيارة من Google Sheet")
-
-# عرض البيانات
 st.dataframe(df)
-
-# مثال لو عندك موديل ML:
-# مع افتراض أن عندك model.pkl محفوظ معاك
-
-
-
 with open('model (2).pkl', 'rb') as file:
     model = pickle.load(file)
-
-# زر للتنبؤ
 if st.button("🔍 Predict"):
     prediction = model.predict(df)[0]
     st.subheader(f"⚙️ Prediction Result: **{prediction}**")
