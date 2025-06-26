@@ -8,6 +8,7 @@ import cv2
 import io
 import pickle
 import json
+import pandas as pd
 st.set_page_config(layout="wide")
 col1, col2 = st.columns([2, 1])  
 with col2:
