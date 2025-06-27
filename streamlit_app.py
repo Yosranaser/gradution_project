@@ -37,7 +37,7 @@ if uploaded_file is not None:
         st.dataframe(df)
 
         # ✅ تحميل الموديل
-        with open('model.pkl', 'rb') as file:
+        with open('model (2).pkl', 'rb') as file:
             model = pickle.load(file)
 
         # ✅ زر التنبؤ
