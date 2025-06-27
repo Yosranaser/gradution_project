@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import pickle
-
+import cv2
 st.set_page_config(layout="wide")
 
 col1, col2 = st.columns([2, 1])
