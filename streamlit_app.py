@@ -39,12 +39,9 @@ sheet_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=cs
 df = pd.read_csv(sheet_url)
 st.title("📊 بيانات السيارة من Google Sheet")
 st.dataframe(df)
-model = xgb.XGBClassifier()
-model.load_model("model.json")
+with open('model (6).pkl', 'rb') as file:
+    model = pickle.load(file)
 
-# التنبؤ
-prediction = model.predict(df)[0]
-
-            
+           
 
     
