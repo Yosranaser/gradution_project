@@ -29,7 +29,6 @@ with col2:
     """, unsafe_allow_html=True)
 
 uploaded_file = st.file_uploader("🗂️ ارفع ملف CSV للبيانات", type="csv")
-
 if uploaded_file is not None:
     try:
         df = pd.read_csv(uploaded_file, sep=";")
