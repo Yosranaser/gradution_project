@@ -40,16 +40,23 @@ st.dataframe(df)
 with open('model (2).pkl', 'rb') as f:
     model = pickle.load(f)
 
-# 🔥 عرض أسماء الفيتشر المطلوبة
-st.subheader("🔍 Model Required Features")
-st.write(list(model.feature_names_in_))
+feature_names = [
+    'esp32_temperature_(°c)', 'stm32_voltage_(v)', 'stm32_temperature_(°c)',
+    'servo_temperature_(°c)', 'ultrasonic_voltage_(v)', 'motor_driver_temperature_(°c)',
+    'servo_voltage_(v)', 'servo_vibration_(g)', 'universal_voltage_(v)',
+    'motor_driver_voltage_(v)', 'servo_motor_voltage_(v)', 'universal_motor_voltage_(v)',
+    'ultrasonic_signal_loss', 'universal_current_(a)', 'universal_motor_current_(a)',
+    'stm32_current_(a)', 'ultrasonic_temperature_', 'motor_driver_current_(a)',
+    'servo_motor_current_(a)', 'universal_noise_(db)', 'servo_current_(a)',
+    'esp32_voltage_(v)', 'esp32_current_(a)', 'stm_temperature_(°c)',
+    'universal_temperature_(°c)', 'speed', 'fuel','timestamp'
+]
 
-# ✔️ التأكد إن الأعمدة موجودة
-missing = [col for col in model.feature_names_in_ if col not in df.columns]
+missing = [col for col in feature_names if col not in df.columns]
 if missing:
     st.error(f"❌ الأعمدة الناقصة في Google Sheet: {missing}")
 else:
-    selected_df = df[model.feature_names_in_]
+    selected_df = df[feature_names]
 
     if st.button("🔧 Predict Car Status"):
         predicted_fault = model.predict(selected_df)[0]
