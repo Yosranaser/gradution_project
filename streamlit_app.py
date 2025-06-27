@@ -28,24 +28,25 @@ with col2:
     </div>
     """, unsafe_allow_html=True)
 
-# 🚗 تحميل البيانات من Google Sheet
-sheet_id = "10GFBlxh8nNU-yIe7_UH0O6UDqW4Uv_fc0zNR_xC_O00"
-sheet_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv"
-df = pd.read_csv(sheet_url)
-df = df.T
-df.columns = df.iloc[0]  # أول صف يتحول إلى أسماء أعمدة
-df = df.drop(df.index[0])  # حذف أول صف من البيانات لأنه بقى أسماء الأعمدة
-df = df.reset_index(drop=True)
-# ✅ تحويل القيم لأرقام لو محتاجه
-df = df.apply(pd.to_numeric, errors='ignore')
+uploaded_file = st.file_uploader("🗂️ ارفع ملف CSV للبيانات", type="csv")
 
-# ✅ عرض الجدول في Streamlit
-st.title("📊 بيانات السيارة بعد تحويل الأعمدة إلى صفوف")
-st.dataframe(df)
+if uploaded_file is not None:
+    df = pd.read_csv(uploaded_file)
+    st.success("✅ تم رفع البيانات بنجاح")
+    st.dataframe(df)
 
-# ✅ تحميل الموديل
-with open('model (2).pkl', 'rb') as f:
-    model = pickle.load(f)
+    # ✅ تحميل الموديل
+    with open('model.pkl', 'rb') as file:
+        model = pickle.load(file)
 
+    # ✅ زر التنبؤ
+    if st.button("🔍 Predict"):
+        try:
+            prediction = model.predict(df)[0]
+            st.subheader(f"⚙️ Prediction Result: **{prediction}**")
+        except Exception as e:
+            st.error(f"❌ حصل خطأ أثناء التنبؤ: {e}")
+else:
+    st.warning("⚠️ من فضلك ارفع ملف CSV قبل التنبؤ.")
 
 
