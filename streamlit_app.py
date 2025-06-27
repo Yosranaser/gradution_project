@@ -31,22 +31,22 @@ with col2:
 uploaded_file = st.file_uploader("🗂️ ارفع ملف CSV للبيانات", type="csv")
 
 if uploaded_file is not None:
-    df = pd.read_csv(uploaded_file)
-    st.success("✅ تم رفع البيانات بنجاح")
-    st.dataframe(df)
+    try:
+        df = pd.read_csv(uploaded_file, sep=";")
+        st.success("✅ تم رفع البيانات بنجاح")
+        st.dataframe(df)
 
-    # ✅ تحميل الموديل
-    with open('model (2).pkl', 'rb') as file:
-        model = pickle.load(file)
+        # ✅ تحميل الموديل
+        with open('model.pkl', 'rb') as file:
+            model = pickle.load(file)
 
-    # ✅ زر التنبؤ
-    if st.button("🔍 Predict"):
-        try:
+        # ✅ زر التنبؤ
+        if st.button("🔍 Predict"):
             prediction = model.predict(df)[0]
             st.subheader(f"⚙️ Prediction Result: **{prediction}**")
-        except Exception as e:
-            st.error(f"❌ حصل خطأ أثناء التنبؤ: {e}")
+
+    except Exception as e:
+        st.error(f"❌ حصل خطأ: {e}")
 else:
     st.warning("⚠️ من فضلك ارفع ملف CSV قبل التنبؤ.")
-
 
