@@ -66,8 +66,8 @@ if uploaded_file is not None:
     5: "Motor Driver Fault",
     6: "ESP32 Overload"
 }
-fault_name = fault_mapping.get(prediction, "Unknown Fault")
-st.subheader(f"⚙️ Prediction Result: **{fault_name}**")
+        fault_name = fault_mapping.get(prediction, "Unknown Fault")
+        st.subheader(f"⚙️ Prediction Result: **{fault_name}**")
 
     except Exception as e:
         st.error(f"❌ حصل خطأ: {e}")
