@@ -29,24 +29,38 @@ with col2:
     """, unsafe_allow_html=True)
 
 uploaded_file = st.file_uploader("🗂️ ارفع ملف CSV للبيانات", type="csv")
+
 if uploaded_file is not None:
     try:
         df = pd.read_csv(uploaded_file, sep=";")
+
+        # ✅ تصحيح الأعمدة
+        df.columns = df.columns.str.replace('�', '°')
+        df.columns = df.columns.str.replace('(?c)', '(°c)', regex=False)
+
         st.success("✅ تم رفع البيانات بنجاح")
-        df = df.drop(['timestamp'], axis=1)
         st.dataframe(df)
 
         # ✅ تحميل الموديل
-        with open('model (7).pkl', 'rb') as file:
+        with open('model.pkl', 'rb') as file:
             model = pickle.load(file)
 
-        # ✅ زر التنبؤ
-        if st.button("🔍 Predict"):
-            prediction = model.predict(df)[0]
+        expected_features = list(model.feature_names_in_)
+
+        # ✅ تحقق من وجود الأعمدة
+        missing = [col for col in expected_features if col not in df.columns]
+        if missing:
+            st.error(f"❌ الأعمدة الناقصة: {missing}")
+        else:
+            selected_df = df[expected_features]
+
+            # ✅ التنبؤ
+            prediction = model.predict(selected_df)[0]
             st.subheader(f"⚙️ Prediction Result: **{prediction}**")
 
     except Exception as e:
         st.error(f"❌ حصل خطأ: {e}")
 else:
     st.warning("⚠️ من فضلك ارفع ملف CSV قبل التنبؤ.")
+
 
