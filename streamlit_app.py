@@ -49,8 +49,9 @@ with open('model (2).pkl', 'rb') as f:
         # ✅ التنبؤ
 if st.button("🔍 Predict Car Status"):
     
-    predicted_fault = model.predict(df)
+    predicted_fault = model.predict(new_data_df)
     predicted_fault = int(predicted_fault[0])
+
     fault_mapping = {
         0: "No Fault",
         1: "Overcurrent",
@@ -60,10 +61,9 @@ if st.button("🔍 Predict Car Status"):
         5: "Motor Driver Fault",
         6: "ESP32 Overload"
     }
-    
+
     fault_name = fault_mapping.get(predicted_fault, "Unknown Fault")
 
-
-           
+    st.subheader(f"⚙️ Prediction Result: **{fault_name}**")
 
     
