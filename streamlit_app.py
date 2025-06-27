@@ -49,7 +49,7 @@ with open('model (2).pkl', 'rb') as f:
         # ✅ التنبؤ
 if st.button("🔍 Predict Car Status"):
     
-    predicted_fault = model.predict(new_data_df)
+    predicted_fault = model.predict(df)
     predicted_fault = int(predicted_fault[0])
 
     fault_mapping = {
