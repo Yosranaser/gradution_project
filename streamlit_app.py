@@ -44,7 +44,9 @@ st.dataframe(df)
 model = xgb.XGBClassifier()
 model.load_model('model.json')
 
-
+if st.button("🔍 Predict"):
+    prediction = model.predict(X)[0]
+    st.subheader(f"⚙️ Prediction Result: **{prediction}**")
            
 
     
