@@ -47,13 +47,11 @@ with open('model (2).pkl', 'rb') as f:
     model = pickle.load(f)
 
         # ✅ التنبؤ
-        if st.button("🔍 Predict Car Status"):
-            prediction = model.predict(df)[0]
-            st.subheader(f"⚙️ Prediction Result: **{prediction}**")
+if st.button("🔍 Predict Car Status"):
+   prediction = model.predict(df)[0]
+   st.subheader(f"⚙️ Prediction Result: **{prediction}**")
 
-if st.button("🔍 Predict"):
-    prediction = model.predict(df)[0]
-    st.subheader(f"⚙️ Prediction Result: **{prediction}**")
+
            
 
     
