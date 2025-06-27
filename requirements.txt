@@ -5,6 +5,7 @@ Pillow
 firebase-admin
 xgboost
 joblib
+pickle
 
 
 
