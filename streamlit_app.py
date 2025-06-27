@@ -66,7 +66,7 @@ else:
     selected_df = df[feature_names]
 
     if st.button("🔧 Predict Car Status"):
-        predicted_fault = model.predict(selected_df)[0]
+        predicted_fault = model.predict(selected_df)
 
         fault_mapping = {
             0: "No Fault",
