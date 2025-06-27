@@ -1,18 +1,12 @@
 import streamlit as st
-import os
-import numpy as np
-from PIL import Image
-import firebase_admin
-from firebase_admin import credentials, db
-import cv2
-import io
-import pickle
-import json
 import pandas as pd
-import xgboost as xgb
-import joblib
+import numpy as np
+import pickle
+
 st.set_page_config(layout="wide")
-col1, col2 = st.columns([2, 1])  
+
+# 🎨 الواجهة
+col1, col2 = st.columns([2, 1])
 with col2:
     st.markdown("""
     <div style="background-color:#f2f2f2; padding:25px; border-radius:15px; text-align:right; direction:rtl;">
@@ -34,37 +28,42 @@ with col2:
     </div>
     """, unsafe_allow_html=True)
 
+# 🚗 تحميل البيانات من Google Sheet
 sheet_id = "10GFBlxh8nNU-yIe7_UH0O6UDqW4Uv_fc0zNR_xC_O00"
 sheet_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv"
 df = pd.read_csv(sheet_url)
+
 st.title("📊 بيانات السيارة من Google Sheet")
 st.dataframe(df)
 
-
-# model = xgb.XGBClassifier()
-# model.load_model('model.json')
+# ✅ تحميل الموديل
 with open('model (2).pkl', 'rb') as f:
     model = pickle.load(f)
 
-        # ✅ التنبؤ
-if st.button("🔍 Predict Car Status"):
-    
-    predicted_fault = model.predict(df.iloc[:, 0:27])
-    predicted_fault = int(predicted_fault[0])
+# 🔥 عرض أسماء الفيتشر المطلوبة
+st.subheader("🔍 Model Required Features")
+st.write(list(model.feature_names_in_))
 
-    fault_mapping = {
-        0: "No Fault",
-        1: "Overcurrent",
-        2: "Undervoltage",
-        3: "Overtemperature",
-        4: "Ultrasonic Failure",
-        5: "Motor Driver Fault",
-        6: "ESP32 Overload"
-    }
+# ✔️ التأكد إن الأعمدة موجودة
+missing = [col for col in model.feature_names_in_ if col not in df.columns]
+if missing:
+    st.error(f"❌ الأعمدة الناقصة في Google Sheet: {missing}")
+else:
+    selected_df = df[model.feature_names_in_]
 
-    fault_name = fault_mapping.get(predicted_fault, "Unknown Fault")
+    if st.button("🔧 Predict Car Status"):
+        predicted_fault = model.predict(selected_df)[0]
 
-    st.subheader(f"⚙️ Prediction Result: **{fault_name}**")
+        fault_mapping = {
+            0: "No Fault",
+            1: "Overcurrent",
+            2: "Undervoltage",
+            3: "Overtemperature",
+            4: "Ultrasonic Failure",
+            5: "Motor Driver Fault",
+            6: "ESP32 Overload"
+        }
 
+        fault_name = fault_mapping.get(predicted_fault, "Unknown Fault")
 
-
+        st.subheader(f"⚙️ Prediction Result: **{fault_name}**")
