@@ -47,46 +47,5 @@ st.dataframe(df)
 with open('model (2).pkl', 'rb') as f:
     model = pickle.load(f)
 
-feature_names = [
-    'esp32_temperature_(°c)', 'stm32_voltage_(v)', 'stm32_temperature_(°c)',
-    'servo_temperature_(°c)', 'ultrasonic_voltage_(v)', 'motor_driver_temperature_(°c)',
-    'servo_voltage_(v)', 'servo_vibration_(g)', 'universal_voltage_(v)',
-    'motor_driver_voltage_(v)', 'servo_motor_voltage_(v)', 'universal_motor_voltage_(v)',
-    'ultrasonic_signal_loss', 'universal_current_(a)', 'universal_motor_current_(a)',
-    'stm32_current_(a)', 'ultrasonic_temperature_', 'motor_driver_current_(a)',
-    'servo_motor_current_(a)', 'universal_noise_(db)', 'servo_current_(a)',
-    'esp32_voltage_(v)', 'esp32_current_(a)', 'stm_temperature_(°c)',
-    'universal_temperature_(°c)', 'speed', 'fuel','timestamp'
-]
 
-# ✅ ترتيب الأعمدة بشكل صحيح
-try:
-    selected_df = selected_df[model.feature_names_in_]
-except Exception as e:
-    st.error(f"❌ مشكلة في الأعمدة: {e}")
 
-# ✅ تأكد من النوع
-try:
-    selected_df = selected_df.astype(float)
-except Exception as e:
-    st.error(f"❌ خطأ في تحويل البيانات لأرقام: {e}")
-
-# ✅ لو عايزة صف واحد
-selected_row = selected_df.iloc[[0]]
-
-# ✅ التنبؤ
-if st.button("🔍 Predict"):
-    prediction = model.predict(selected_row)[0]
-
-    fault_mapping = {
-        0: "No Fault",
-        1: "Overcurrent",
-        2: "Undervoltage",
-        3: "Overtemperature",
-        4: "Ultrasonic Failure",
-        5: "Motor Driver Fault",
-        6: "ESP32 Overload"
-    }
-
-    fault_name = fault_mapping.get(prediction, "Unknown Fault")
-    st.subheader(f"⚙️ Prediction Result: **{fault_name}**")
