@@ -33,11 +33,9 @@ sheet_id = "10GFBlxh8nNU-yIe7_UH0O6UDqW4Uv_fc0zNR_xC_O00"
 sheet_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv"
 df = pd.read_csv(sheet_url)
 df = df.T
-
-# ✅ تحويل أول صف إلى أسماء أعمدة جديدة
-df.columns = df.iloc[0]  # أول صف يصبح الأعمدة
-df = df.drop(df.index[0])  # حذف أول صف من البيانات
-
+df.columns = df.iloc[0]  # أول صف يتحول إلى أسماء أعمدة
+df = df.drop(df.index[0])  # حذف أول صف من البيانات لأنه بقى أسماء الأعمدة
+df = df.reset_index(drop=True)
 # ✅ تحويل القيم لأرقام لو محتاجه
 df = df.apply(pd.to_numeric, errors='ignore')
 
