@@ -34,6 +34,7 @@ if uploaded_file is not None:
     try:
         df = pd.read_csv(uploaded_file, sep=";")
         st.success("✅ تم رفع البيانات بنجاح")
+        df = df.drop(['timestamp'], axis=1)
         st.dataframe(df)
 
         # ✅ تحميل الموديل
