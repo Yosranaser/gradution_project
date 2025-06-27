@@ -66,4 +66,5 @@ if st.button("🔍 Predict Car Status"):
 
     st.subheader(f"⚙️ Prediction Result: **{fault_name}**")
 
-    
+
+
