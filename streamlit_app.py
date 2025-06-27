@@ -41,8 +41,15 @@ st.title("📊 بيانات السيارة من Google Sheet")
 st.dataframe(df)
 
 
-model = xgb.XGBClassifier()
-model.load_model('model.json')
+# model = xgb.XGBClassifier()
+# model.load_model('model.json')
+with open('model (2).pkl', 'rb') as f:
+    model = pickle.load(f)
+
+        # ✅ التنبؤ
+        if st.button("🔍 Predict Car Status"):
+            prediction = model.predict(df)[0]
+            st.subheader(f"⚙️ Prediction Result: **{prediction}**")
 
 if st.button("🔍 Predict"):
     prediction = model.predict(df)[0]
