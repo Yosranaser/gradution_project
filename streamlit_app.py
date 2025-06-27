@@ -31,6 +31,7 @@ with col2:
 # 🚗 تحميل البيانات من Google Sheet
 sheet_id = "10GFBlxh8nNU-yIe7_UH0O6UDqW4Uv_fc0zNR_xC_O00"
 sheet_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv"
+df = pd.read_csv(sheet_url)
 df = df.T
 
 # ✅ تحويل أول صف إلى أسماء أعمدة جديدة
