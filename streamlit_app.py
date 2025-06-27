@@ -57,6 +57,17 @@ if uploaded_file is not None:
             # ✅ التنبؤ
             prediction = model.predict(selected_df)[0]
             st.subheader(f"⚙️ Prediction Result: **{prediction}**")
+            fault_mapping = {
+    0: "No Fault",
+    1: "Overcurrent",
+    2: "Undervoltage",
+    3: "Overtemperature",
+    4: "Ultrasonic Failure",
+    5: "Motor Driver Fault",
+    6: "ESP32 Overload"
+}
+fault_name = fault_mapping.get(prediction, "Unknown Fault")
+st.subheader(f"⚙️ Prediction Result: **{fault_name}**")
 
     except Exception as e:
         st.error(f"❌ حصل خطأ: {e}")
