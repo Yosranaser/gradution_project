@@ -59,25 +59,34 @@ feature_names = [
     'universal_temperature_(°c)', 'speed', 'fuel','timestamp'
 ]
 
-missing = [col for col in feature_names if col not in df.columns]
-if missing:
-    st.error(f"❌ الأعمدة الناقصة في Google Sheet: {missing}")
-else:
-    selected_df = df[feature_names]
+# ✅ ترتيب الأعمدة بشكل صحيح
+try:
+    selected_df = selected_df[model.feature_names_in_]
+except Exception as e:
+    st.error(f"❌ مشكلة في الأعمدة: {e}")
 
-    if st.button("🔧 Predict Car Status"):
-        predicted_fault = model.predict(selected_df)
+# ✅ تأكد من النوع
+try:
+    selected_df = selected_df.astype(float)
+except Exception as e:
+    st.error(f"❌ خطأ في تحويل البيانات لأرقام: {e}")
 
-        fault_mapping = {
-            0: "No Fault",
-            1: "Overcurrent",
-            2: "Undervoltage",
-            3: "Overtemperature",
-            4: "Ultrasonic Failure",
-            5: "Motor Driver Fault",
-            6: "ESP32 Overload"
-        }
+# ✅ لو عايزة صف واحد
+selected_row = selected_df.iloc[[0]]
 
-        fault_name = fault_mapping.get(predicted_fault, "Unknown Fault")
+# ✅ التنبؤ
+if st.button("🔍 Predict"):
+    prediction = model.predict(selected_row)[0]
 
-        st.subheader(f"⚙️ Prediction Result: **{fault_name}**")
+    fault_mapping = {
+        0: "No Fault",
+        1: "Overcurrent",
+        2: "Undervoltage",
+        3: "Overtemperature",
+        4: "Ultrasonic Failure",
+        5: "Motor Driver Fault",
+        6: "ESP32 Overload"
+    }
+
+    fault_name = fault_mapping.get(prediction, "Unknown Fault")
+    st.subheader(f"⚙️ Prediction Result: **{fault_name}**")
