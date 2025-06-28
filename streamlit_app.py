@@ -64,20 +64,20 @@ with col1:
         score1 = len(matches1)
         score2 = len(matches2)
         with  col2 :
-        if score1 > score2 and score1 > 20:
-            st.success("✅ Face matched with yossra ")
-            st.image("yossra.jpg", caption="yossra naser has sussessifully logged in")
-            flag=1
-        elif score2 > score1 and score2 > 20:
-            flag=1
-            st.success("✅ Face matched with shorouk")
-            st.image("shorouk2.jpg", caption="shorouk ahmed has sussessifully logged in ")
-            
-        else:
-            st.error("❌ Face not recognized")
-            flag=0
-            cap.release()       
-            cv2.destroyAllWindows()
+            if score1 > score2 and score1 > 20:
+                st.success("✅ Face matched with yossra ")
+                st.image("yossra.jpg", caption="yossra naser has sussessifully logged in")
+                flag=1
+            elif score2 > score1 and score2 > 20:
+                flag=1
+                st.success("✅ Face matched with shorouk")
+                st.image("shorouk2.jpg", caption="shorouk ahmed has sussessifully logged in ")
+                
+            else:
+                st.error("❌ Face not recognized")
+                flag=0
+                cap.release()       
+                cv2.destroyAllWindows()
     if flag==1:
         uploaded_file = st.file_uploader("🗂️ ارفع ملف CSV للبيانات", type="csv")
         
