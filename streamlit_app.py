@@ -8,7 +8,7 @@ import io
 st.set_page_config(layout="wide")
 
 col1, col2 = st.columns([1,1])
-with col2:
+with col1:
     st.markdown("""
     <div style="background-color:#f2f2f2; padding:20px; border-radius:15px; direction:rtl; text-align:right;">
         <p style="font-size:20px; color:#1f77b4;">
