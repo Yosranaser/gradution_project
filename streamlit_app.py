@@ -45,84 +45,84 @@ ref1 = cv2.imread("yossra.jpg", 0)
 ref2 = cv2.imread("shorouk2.jpg", 0)
 flag=0
 col1, col2 = st.columns([1,1])
-col1:
-uploaded_image = st.camera_input("Take your picture")
-if uploaded_image is not None:
-    user_img = Image.open(io.BytesIO(uploaded_image.read())).convert("L")
-    user_img_np = np.array(user_img)
-
+ with col1:
+    uploaded_image = st.camera_input("Take your picture")
+    if uploaded_image is not None:
+        user_img = Image.open(io.BytesIO(uploaded_image.read())).convert("L")
+        user_img_np = np.array(user_img)
     
-    orb = cv2.ORB_create()
-    kp1, des1 = orb.detectAndCompute(user_img_np, None)
-    kp2, des2 = orb.detectAndCompute(ref1, None)
-    kp3, des3 = orb.detectAndCompute(ref2, None)
-
-    bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
-    matches1 = bf.match(des1, des2)
-    matches2 = bf.match(des1, des3)
-
-    score1 = len(matches1)
-    score2 = len(matches2)
- col2 :
-    if score1 > score2 and score1 > 20:
-        st.success("✅ Face matched with yossra ")
-        st.image("yossra.jpg", caption="yossra naser has sussessifully logged in")
-        flag=1
-    elif score2 > score1 and score2 > 20:
-        flag=1
-        st.success("✅ Face matched with shorouk")
-        st.image("shorouk2.jpg", caption="shorouk ahmed has sussessifully logged in ")
         
-    else:
-        st.error("❌ Face not recognized")
-        flag=0
-        cap.release()       
-        cv2.destroyAllWindows()
-if flag==1:
-    uploaded_file = st.file_uploader("🗂️ ارفع ملف CSV للبيانات", type="csv")
+        orb = cv2.ORB_create()
+        kp1, des1 = orb.detectAndCompute(user_img_np, None)
+        kp2, des2 = orb.detectAndCompute(ref1, None)
+        kp3, des3 = orb.detectAndCompute(ref2, None)
     
-    if uploaded_file is not None:
-        try:
-            df = pd.read_csv(uploaded_file, sep=";")
+        bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
+        matches1 = bf.match(des1, des2)
+        matches2 = bf.match(des1, des3)
     
-            # ✅ تصحيح الأعمدة
-            df.columns = df.columns.str.replace('�', '°')
-            df.columns = df.columns.str.replace('(?c)', '(°c)', regex=False)
-    
-            st.success("✅ تم رفع البيانات بنجاح")
-            st.dataframe(df)
-    
-            # ✅ تحميل الموديل
-            with open('model (7).pkl', 'rb') as file:
-                model = pickle.load(file)
-    
-            expected_features = list(model.feature_names_in_)
-    
-            # ✅ تحقق من وجود الأعمدة
-            missing = [col for col in expected_features if col not in df.columns]
-            if missing:
-                st.error(f"❌ الأعمدة الناقصة: {missing}")
-            else:
-                selected_df = df[expected_features]
-    
-                # ✅ التنبؤ
-                prediction = model.predict(selected_df)[0]
-                st.subheader(f"⚙️ Prediction Result: **{prediction}**")
-                fault_mapping = {
-        0: "No Fault",
-        1: "Overcurrent",
-        2: "Undervoltage",
-        3: "Overtemperature",
-        4: "Ultrasonic Failure",
-        5: "Motor Driver Fault",
-        6: "ESP32 Overload"
-    }
-            fault_name = fault_mapping.get(prediction, "Unknown Fault")
-            st.subheader(f"⚙️ Prediction Result: **{fault_name}**")
-    
-        except Exception as e:
-            st.error(f"❌ حصل خطأ: {e}")
-    else:
-        st.warning("⚠️ من فضلك ارفع ملف CSV قبل التنبؤ.")
-    
-    
+        score1 = len(matches1)
+        score2 = len(matches2)
+     col2 :
+        if score1 > score2 and score1 > 20:
+            st.success("✅ Face matched with yossra ")
+            st.image("yossra.jpg", caption="yossra naser has sussessifully logged in")
+            flag=1
+        elif score2 > score1 and score2 > 20:
+            flag=1
+            st.success("✅ Face matched with shorouk")
+            st.image("shorouk2.jpg", caption="shorouk ahmed has sussessifully logged in ")
+            
+        else:
+            st.error("❌ Face not recognized")
+            flag=0
+            cap.release()       
+            cv2.destroyAllWindows()
+    if flag==1:
+        uploaded_file = st.file_uploader("🗂️ ارفع ملف CSV للبيانات", type="csv")
+        
+        if uploaded_file is not None:
+            try:
+                df = pd.read_csv(uploaded_file, sep=";")
+        
+                # ✅ تصحيح الأعمدة
+                df.columns = df.columns.str.replace('�', '°')
+                df.columns = df.columns.str.replace('(?c)', '(°c)', regex=False)
+        
+                st.success("✅ تم رفع البيانات بنجاح")
+                st.dataframe(df)
+        
+                # ✅ تحميل الموديل
+                with open('model (7).pkl', 'rb') as file:
+                    model = pickle.load(file)
+        
+                expected_features = list(model.feature_names_in_)
+        
+                # ✅ تحقق من وجود الأعمدة
+                missing = [col for col in expected_features if col not in df.columns]
+                if missing:
+                    st.error(f"❌ الأعمدة الناقصة: {missing}")
+                else:
+                    selected_df = df[expected_features]
+        
+                    # ✅ التنبؤ
+                    prediction = model.predict(selected_df)[0]
+                    st.subheader(f"⚙️ Prediction Result: **{prediction}**")
+                    fault_mapping = {
+            0: "No Fault",
+            1: "Overcurrent",
+            2: "Undervoltage",
+            3: "Overtemperature",
+            4: "Ultrasonic Failure",
+            5: "Motor Driver Fault",
+            6: "ESP32 Overload"
+        }
+                fault_name = fault_mapping.get(prediction, "Unknown Fault")
+                st.subheader(f"⚙️ Prediction Result: **{fault_name}**")
+        
+            except Exception as e:
+                st.error(f"❌ حصل خطأ: {e}")
+        else:
+            st.warning("⚠️ من فضلك ارفع ملف CSV قبل التنبؤ.")
+        
+        
