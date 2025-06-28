@@ -28,7 +28,8 @@ with col2:
         </p>
     </div>
     """, unsafe_allow_html=True)
-
+with col2:
+     st.image("yossra.jpg", caption="yossra naser has sussessifully logged in")
 
 
 ref1 = cv2.imread("yossra.jpg", 0)
