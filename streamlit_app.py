@@ -63,7 +63,7 @@ with col1:
     
         score1 = len(matches1)
         score2 = len(matches2)
- with  col2 :
+        with  col2 :
         if score1 > score2 and score1 > 20:
             st.success("✅ Face matched with yossra ")
             st.image("yossra.jpg", caption="yossra naser has sussessifully logged in")
