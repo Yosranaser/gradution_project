@@ -44,6 +44,8 @@ with col2:
 ref1 = cv2.imread("yossra.jpg", 0)
 ref2 = cv2.imread("shorouk2.jpg", 0)
 flag=0
+col1, col2 = st.columns([1,1])
+col1:
 uploaded_image = st.camera_input("Take your picture")
 if uploaded_image is not None:
     user_img = Image.open(io.BytesIO(uploaded_image.read())).convert("L")
@@ -61,7 +63,7 @@ if uploaded_image is not None:
 
     score1 = len(matches1)
     score2 = len(matches2)
-
+ col2 :
     if score1 > score2 and score1 > 20:
         st.success("✅ Face matched with yossra ")
         st.image("yossra.jpg", caption="yossra naser has sussessifully logged in")
