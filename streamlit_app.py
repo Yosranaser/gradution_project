@@ -7,7 +7,7 @@ from PIL import Image
 import io
 st.set_page_config(layout="wide")
 
-col1, col2 ,col3= st.columns([1, 1])
+col1, col2 ,col3= st.columns([1, 1,1])
 with col2:
     st.markdown("""
     <div style="background-color:#f2f2f2; padding:20px; border-radius:15px; direction:rtl; text-align:right;">
