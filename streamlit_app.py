@@ -45,7 +45,7 @@ ref1 = cv2.imread("yossra.jpg", 0)
 ref2 = cv2.imread("shorouk2.jpg", 0)
 flag=0
 col1, col2 = st.columns([1,1])
- with col1:
+with col1:
     uploaded_image = st.camera_input("Take your picture")
     if uploaded_image is not None:
         user_img = Image.open(io.BytesIO(uploaded_image.read())).convert("L")
