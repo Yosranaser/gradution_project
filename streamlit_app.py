@@ -29,7 +29,7 @@ with col2:
     </div>
     """, unsafe_allow_html=True)
 with col2:
-     st.image("yossra.jpg", caption="yossra naser has sussessifully logged in")
+     st.image("WhatsApp Image 2025-06-28 at 13.41.48_b3ecfd63.jpg", caption="your car")
 
 
 ref1 = cv2.imread("yossra.jpg", 0)
