@@ -6,7 +6,6 @@ import cv2
 from PIL import Image
 import io
 st.set_page_config(layout="wide")
-
 col1, col2 = st.columns([1,1])
 with col1:
     st.markdown("""
@@ -117,6 +116,18 @@ with col1:
         }
                 fault_name = fault_mapping.get(prediction, "Unknown Fault")
                 st.subheader(f"⚙️ Prediction Result: **{fault_name}**")
+                st.sidebar.title("🚗 Car App Navigation")
+                page = st.sidebar.selectbox("اختر الصفحة:", ["الصفحة الرئيسية", "Dashboard"])
+                if page == "home page":
+                    st.title("🏠 الصفحة الرئيسية")
+                    st.write("اهلا بك في الصفحة الرئيسية لتطبيق مراقبة السيارة.")
+                
+                
+                elif page == "Dashboard":
+                    st.title("🚗 Dashboard")
+                    st.write("هنا يتم عرض الداشبورد والبيانات الخاصة بحالة السيارة.")
+                    # هنا تحط باقي أكواد الداشبورد مثل الرسوم البيانية والبيانات
+
                 
             except Exception as e:
                 st.error(f"❌ حصل خطأ: {e}")
