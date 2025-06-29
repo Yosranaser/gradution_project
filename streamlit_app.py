@@ -119,7 +119,7 @@ with col1:
         }
                 fault_name = fault_mapping.get(prediction, "Unknown Fault")
                 st.subheader(f"⚙️ Prediction Result: **{fault_name}**")
-        
+                st.page_link("Dashboard.py", label="🚗 اذهب إلى الداشبورد", icon="🚗")
             except Exception as e:
                 st.error(f"❌ حصل خطأ: {e}")
         else:
