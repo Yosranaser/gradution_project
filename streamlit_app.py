@@ -39,9 +39,9 @@ elif page == "Dashboard":
        st.error(f"🚨 Ultrasonic Signal Loss Detected: {data['ultrasonic_signal_loss']}")
    else:
        st.success("✅ No Signal Loss Detected in Ultrasonic Sensor")
-   
+    servo_temp = data['servo_temperature_(°c)'].iloc[-1]
    fig = go.Figure(go.Indicator(
-   servo_temp = data['servo_temperature_(°c)'].iloc[-1]
+  
    mode="gauge+number",
    value=servo_temp,
    title={'text': "Servo Temperature"},
