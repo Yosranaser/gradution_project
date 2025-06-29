@@ -21,10 +21,7 @@ elif page == "Dashboard":
    
    
    url = "https://github.com/Yosranaser/gradution_project/blob/main/predictive_maintenance_final_fixed.csv"
-   
-   # قراءة البيانات
-   response = requests.get(url)
-   data = response.json()
+   data = pd.read_csv(url)
    
    st.subheader("🔧 حالة المكونات الرئيسية")
    
