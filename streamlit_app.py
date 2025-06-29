@@ -41,10 +41,10 @@ elif page == "Dashboard":
        st.success("✅ No Signal Loss Detected in Ultrasonic Sensor")
    
    fig = go.Figure(go.Indicator(
-    mode="gauge+number",
-    value=value,
-    title={'text': "Servo Temperature"},
-    gauge={'axis': {'range': [0, 100]}}
+   mode="gauge+number",
+   value=servo_temp,
+   title={'text': "Servo Temperature"},
+   gauge={'axis': {'range': [0, 100]}}
 ))
 
    st.plotly_chart(fig)
