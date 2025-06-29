@@ -40,7 +40,14 @@ elif page == "Dashboard":
    else:
        st.success("✅ No Signal Loss Detected in Ultrasonic Sensor")
    
-   
+   fig = go.Figure(go.Indicator(
+    mode="gauge+number",
+    value=value,
+    title={'text': "Servo Temperature"},
+    gauge={'axis': {'range': [0, 100]}}
+))
+
+st.plotly_chart(fig)
    fig = go.Figure(go.Indicator(
        mode="gauge+number+delta",
        value=data['esp32_temperature_(°c)'],
