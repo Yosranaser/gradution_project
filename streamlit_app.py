@@ -104,8 +104,6 @@ with col1:
                     st.error(f"❌ الأعمدة الناقصة: {missing}")
                 else:
                     selected_df = df[expected_features]
-        
-                    # ✅ التنبؤ
                     prediction = model.predict(selected_df)[0]
                     st.subheader(f"⚙️ Prediction Result: **{prediction}**")
                     fault_mapping = {
