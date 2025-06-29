@@ -34,13 +34,13 @@ elif page == "Dashboard":
    col2.metric("Universal Voltage (V)", f"{data['universal_voltage_(v)']} V")
    col3.metric("Servo Vibration (g)", f"{data['servo_vibration_(g)']} g")
    
-   # 🚨 تنبيه الإشارة المفقودة
-   if data["ultrasonic_signal_loss"] > 0:
+   
+   if data["ultrasonic_signal_loss"].iloc[-1] > 0::
        st.error(f"🚨 Ultrasonic Signal Loss Detected: {data['ultrasonic_signal_loss']}")
    else:
        st.success("✅ No Signal Loss Detected in Ultrasonic Sensor")
    
-   # 🔥 رسم Gauge لدرجة حرارة ESP32
+   
    fig = go.Figure(go.Indicator(
        mode="gauge+number+delta",
        value=data['esp32_temperature_(°c)'],
