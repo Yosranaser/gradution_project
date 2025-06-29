@@ -18,8 +18,6 @@ elif page == "Dashboard":
    st.write("هنا يتم عرض الداشبورد والبيانات الخاصة بحالة السيارة.")
    st.set_page_config(page_title="Dashboard", page_icon="🚗", layout="wide")
    st.title("🚗 Car Health Dashboard")
-   
-   
    url = "https://github.com/Yosranaser/gradution_project/blob/main/predictive_maintenance_final_fixed.csv"
    data = pd.read_csv(url)
    
