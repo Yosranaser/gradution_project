@@ -47,7 +47,7 @@ elif page == "Dashboard":
     gauge={'axis': {'range': [0, 100]}}
 ))
 
-st.plotly_chart(fig)
+   st.plotly_chart(fig)
    fig = go.Figure(go.Indicator(
        mode="gauge+number+delta",
        value=data['esp32_temperature_(°c)'],
