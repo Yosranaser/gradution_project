@@ -35,7 +35,7 @@ elif page == "Dashboard":
    col3.metric("Servo Vibration (g)", f"{data['servo_vibration_(g)']} g")
    
    
-   if data["ultrasonic_signal_loss"].iloc[-1] > 0::
+   if data["ultrasonic_signal_loss"].iloc[-1] > 0:
        st.error(f"🚨 Ultrasonic Signal Loss Detected: {data['ultrasonic_signal_loss']}")
    else:
        st.success("✅ No Signal Loss Detected in Ultrasonic Sensor")
