@@ -8,7 +8,7 @@ st.set_page_config(page_title="Dashboard", page_icon="🚗", layout="wide")
 st.title("🚗 Car Health Dashboard")
 
 # 🔗 رابط البيانات من GitHub (عدل الرابط حسب ريبوك)
-url = "https://raw.githubusercontent.com/username/repo/main/data.json"
+url = "https://github.com/Yosranaser/gradution_project/blob/main/predictive_maintenance_final_fixed.csv"
 
 # قراءة البيانات
 response = requests.get(url)
