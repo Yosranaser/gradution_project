@@ -7,6 +7,7 @@ from PIL import Image
 import io
 
 st.page_link("Dashboard.py", label="🚗 اذهب إلى الداشبورد", icon="🚗")
+
 st.set_page_config(layout="wide")
 
 col1, col2 = st.columns([1,1])
