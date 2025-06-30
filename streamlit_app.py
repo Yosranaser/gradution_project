@@ -40,29 +40,28 @@ elif page == "Dashboard":
    else:
        st.success("✅ No Signal Loss Detected in Ultrasonic Sensor")
    servo_temp = data['servo_temperature_(°c)'].iloc[-1]
-   fig = go.Figure(go.Indicator(
   
-   mode="gauge+number",
-   value=servo_temp,
-   title={'text': "Servo Temperature"},
-   gauge={'axis': {'range': [0, 100]}}
-   delta={'reference': 70},
-   gauge={
-           'axis': {'range': [0, 100]},
-           'bar': {'color': "darkblue"},
-           'steps': [
-               {'range': [0, 60], 'color': "lightgreen"},
-               {'range': [60, 85], 'color': "orange"},
-               {'range': [85, 100], 'color': "red"}
-           ],
-           'threshold': {
-               'line': {'color': "red", 'width': 4},
-               'thickness': 0.75,
-               'value': 85
-           }
-       },
-       title={'text': "ESP32 Temperature (°C)"}
-   ))
+    fig = go.Figure(go.Indicator(
+    mode="gauge+number+delta",
+    value=servo_temp,  # تأكد أن هذا المتغير رقم (int أو float)
+    delta={'reference': 70},
+    title={'text': "Servo Temperature (°C)"},
+    gauge={
+        'axis': {'range': [0, 100]},
+        'bar': {'color': "darkblue"},
+        'steps': [
+            {'range': [0, 60], 'color': "lightgreen"},
+            {'range': [60, 85], 'color': "orange"},
+            {'range': [85, 100], 'color': "red"}
+        ],
+        'threshold': {
+            'line': {'color': "red", 'width': 4},
+            'thickness': 0.75,
+            'value': 85
+        }
+    }
+))
+
 
    
    st.plotly_chart(fig, use_container_width=True)
