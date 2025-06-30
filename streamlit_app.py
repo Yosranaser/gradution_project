@@ -68,7 +68,7 @@ if page == "Dashboard":
    
    data_table = pd.DataFrame(list(data.items()), columns=["Component", "Value"])
    st.dataframe(data_table)                
-elif page=="الصفحة الرئيسية"
+elif page=="الصفحة الرئيسية":
    col1, col2 = st.columns([1,1])
    with col1:
        st.markdown("""
