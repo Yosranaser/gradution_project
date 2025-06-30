@@ -37,7 +37,64 @@ if page == "Dashboard":
                    label=col,
                    value=f"{data[col].mean():.2f}"
                )
+   for col in data.columns:
+    st.markdown(f"### 📌 {col} Distribution")
 
+    fig = go.Figure()
+
+    # Histogram
+    fig.add_trace(go.Histogram(
+        x=data[col],
+        nbinsx=20,
+        name="Distribution",
+        marker_color='lightblue',
+        opacity=0.75
+    ))
+
+    # ✅ إضافة خطوط حدود — عدل حسب الفيتشر
+    min_value = data[col].min()
+    max_value = data[col].max()
+
+    # مثال على تقسيم المستويات (يمكن تخصيصه حسب الفيتشر):
+    normal_max = data[col].mean()
+    warning_max = normal_max + (max_value - normal_max) * 0.5
+    danger_min = warning_max
+
+    # ✅ مناطق Normal
+    fig.add_vrect(
+        x0=min_value, x1=normal_max,
+        fillcolor="green", opacity=0.2,
+        line_width=0,
+        annotation_text="Normal"
+    )
+
+    # ✅ مناطق Warning
+    fig.add_vrect(
+        x0=normal_max, x1=warning_max,
+        fillcolor="orange", opacity=0.2,
+        line_width=0,
+        annotation_text="Warning"
+    )
+
+    # ✅ مناطق Danger
+    fig.add_vrect(
+        x0=danger_min, x1=max_value,
+        fillcolor="red", opacity=0.2,
+        line_width=0,
+        annotation_text="Danger"
+    )
+
+    # إعدادات الشكل العام
+    fig.update_layout(
+        title=f"{col} Distribution Histogram",
+        xaxis_title=col,
+        yaxis_title="Count",
+        bargap=0.05,
+        template="plotly_white"
+    )
+
+    # عرض الرسم
+    st.plotly_chart(fig)
    if data["ultrasonic_signal_loss"].iloc[-1] > 0:
        st.error(f"🚨 Ultrasonic Signal Loss Detected: {data['ultrasonic_signal_loss']}")
    else:
