@@ -186,7 +186,6 @@ elif page=="الصفحة الرئيسية":
                    
                except Exception as e:
                    st.error(f"❌ حصل خطأ: {e}")
-        else:
-            st.warning("⚠️ من فضلك ارفع ملف CSV قبل التنبؤ.")
+       
         
         
