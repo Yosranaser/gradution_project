@@ -63,7 +63,7 @@ elif page == "Dashboard":
        },
        title={'text': "ESP32 Temperature (°C)"}
    ))
-))
+
    
    st.plotly_chart(fig, use_container_width=True)
    
