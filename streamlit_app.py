@@ -7,6 +7,17 @@ from PIL import Image
 import io
 import requests
 import plotly.graph_objects as go
+def generate_response(intent):
+    if intent == "nearest_gas":
+        return "🛢️ أقرب محطة بنزين هي محطة وطنية على بعد 2.3 كم."
+    elif intent == "nearest_restaurant":
+        return "🍽️ أقرب مطعم هو مطعم البركة على بعد 1.5 كم."
+    elif intent == "traffic_info":
+        return "🚦 الطريق حالياً مزدحم قليلاً عند شارع الجامعة."
+    elif intent == "navigate":
+        return "🗺️ جاري فتح الاتجاهات إلى وجهتك."
+    else:
+        return "🤖 لم أفهم سؤالك تماماً، حاول بصيغة أخرى."
 st.set_page_config(layout="wide")
 st.sidebar.title("🚗 Car App Navigation")
 page = st.sidebar.selectbox("اختر الصفحة:", ["الصفحة الرئيسية", "Dashboard","chatbot"])
@@ -133,6 +144,13 @@ if page == "Dashboard":
    st.dataframe(data_table) 
 elif page=="chatbot":
    st.title("🚗 Smart FOTA Car Chatbot")
+   st.markdown("---")
+   
+   # ✅ مربع إدخال السؤال
+   user_input = st.text_input("💬 اسأل أي شيء عن الطريق، الاتجاهات، أو الأماكن القريبة:")
+   if user_input:
+    response = generate_response(intent)
+    st.success(response)
 elif page=="الصفحة الرئيسية":
    col1, col2 = st.columns([1,1])
    with col1:
