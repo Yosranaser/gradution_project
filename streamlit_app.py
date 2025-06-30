@@ -29,13 +29,13 @@ if page == "Dashboard":
   cols = st.columns(len(df.columns))
   
   for idx, col in enumerate(df.columns):
-       # 🔧 تأكد أن البيانات رقمية
-       df[col] = pd.to_numeric(df[col], errors='coerce')
+      
+    df[col] = pd.to_numeric(df[col], errors='coerce')
        
-       with cols[idx]:
-           st.metric(
-               label=col,
-               value=f"{df[col].mean():.2f}"
+    with cols[idx]:
+      st.metric(
+      label=col,
+      value=f"{df[col].mean():.2f}"
            )
 
    if data["ultrasonic_signal_loss"].iloc[-1] > 0:
