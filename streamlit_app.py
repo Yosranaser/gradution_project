@@ -18,6 +18,17 @@ def generate_response(intent):
         return "🗺️ جاري فتح الاتجاهات إلى وجهتك."
     else:
         return "🤖 لم أفهم سؤالك تماماً، حاول بصيغة أخرى."
+def detect_intent(user_input):
+    if "محطة بنزين" in user_input:
+        return "nearest_gas"
+    elif "مطعم" in user_input:
+        return "nearest_restaurant"
+    elif "زحمة" in user_input or "الطريق" in user_input:
+        return "traffic_info"
+    elif "اوصل" in user_input or "اتجه" in user_input:
+        return "navigate"
+    else:
+        return "general"
 st.set_page_config(layout="wide")
 st.sidebar.title("🚗 Car App Navigation")
 page = st.sidebar.selectbox("اختر الصفحة:", ["الصفحة الرئيسية", "Dashboard","chatbot"])
