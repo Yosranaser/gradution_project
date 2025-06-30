@@ -9,7 +9,7 @@ import requests
 import plotly.graph_objects as go
 st.set_page_config(layout="wide")
 st.sidebar.title("🚗 Car App Navigation")
-page = st.sidebar.selectbox("اختر الصفحة:", ["الصفحة الرئيسية", "Dashboard"])
+page = st.sidebar.selectbox("اختر الصفحة:", ["الصفحة الرئيسية", "Dashboard","chatbot"])
 if page == "Dashboard":
    st.title("🚗 Dashboard")
    st.write("هنا يتم عرض الداشبورد والبيانات الخاصة بحالة السيارة.")
@@ -130,7 +130,9 @@ if page == "Dashboard":
    st.subheader("📜 Summary Data")
    
    data_table = pd.DataFrame(list(data.items()), columns=["Component", "Value"])
-   st.dataframe(data_table)                
+   st.dataframe(data_table) 
+elif page=="chatbot":
+   st.title("🚗 Smart FOTA Car Chatbot")
 elif page=="الصفحة الرئيسية":
    col1, col2 = st.columns([1,1])
    with col1:
