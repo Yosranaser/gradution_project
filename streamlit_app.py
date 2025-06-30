@@ -148,6 +148,7 @@ elif page=="chatbot":
    
    # ✅ مربع إدخال السؤال
    user_input = st.text_input("💬 اسأل أي شيء عن الطريق، الاتجاهات، أو الأماكن القريبة:")
+   intent = detect_intent(user_input)
    if user_input:
     response = generate_response(intent)
     st.success(response)
