@@ -23,14 +23,17 @@ if page == "Dashboard":
    # 🔥 تقسيم الصفحة إلى 3 أعمدة
    col1, col2, col3 = st.columns(3)
    
-   col1.metric("ESP32 Temp (°C)", f"{data['esp32_temperature_(°c)']} °C")
-   col2.metric("Servo Temp (°C)", f"{data['servo_temperature_(°c)']} °C")
-   col3.metric("Motor Driver Temp (°C)", f"{data['motor_driver_temperature_(°c)']} °C")
+   st.subheader("📋 Key Features Overview")
+
+  
+   cols = st.columns(len(data.columns))
    
-   col1.metric("STM32 Voltage (V)", f"{data['stm32_voltage_(v)']} V")
-   col2.metric("Universal Voltage (V)", f"{data['universal_voltage_(v)']} V")
-   col3.metric("Servo Vibration (g)", f"{data['servo_vibration_(g)']} g")
-   
+   for idx, col in enumerate(data.columns):
+       with cols[idx]:
+           st.metric(
+               label=col,
+               value=f"{data[col].mean():.2f}"
+           )
    
    if data["ultrasonic_signal_loss"].iloc[-1] > 0:
        st.error(f"🚨 Ultrasonic Signal Loss Detected: {data['ultrasonic_signal_loss']}")
