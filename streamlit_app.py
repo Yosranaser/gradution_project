@@ -46,14 +46,8 @@ elif page == "Dashboard":
    value=servo_temp,
    title={'text': "Servo Temperature"},
    gauge={'axis': {'range': [0, 100]}}
-))
-
-   st.plotly_chart(fig)
-   fig = go.Figure(go.Indicator(
-       mode="gauge+number+delta",
-       value=data['esp32_temperature_(°c)'],
-       delta={'reference': 70},
-       gauge={
+   delta={'reference': 70},
+   gauge={
            'axis': {'range': [0, 100]},
            'bar': {'color': "darkblue"},
            'steps': [
@@ -69,10 +63,11 @@ elif page == "Dashboard":
        },
        title={'text': "ESP32 Temperature (°C)"}
    ))
+))
    
    st.plotly_chart(fig, use_container_width=True)
    
-   # 📊 جدول بيانات ملخص
+   
    st.subheader("📜 Summary Data")
    
    data_table = pd.DataFrame(list(data.items()), columns=["Component", "Value"])
