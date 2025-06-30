@@ -26,15 +26,18 @@ if page == "Dashboard":
    st.subheader("📋 Key Features Overview")
 
   
-   cols = st.columns(len(data.columns))
-   
-   for idx, col in enumerate(data.columns):
+  cols = st.columns(len(df.columns))
+  
+  for idx, col in enumerate(df.columns):
+       # 🔧 تأكد أن البيانات رقمية
+       df[col] = pd.to_numeric(df[col], errors='coerce')
+       
        with cols[idx]:
            st.metric(
                label=col,
-               value=f"{data[col].mean():.2f}"
+               value=f"{df[col].mean():.2f}"
            )
-   
+
    if data["ultrasonic_signal_loss"].iloc[-1] > 0:
        st.error(f"🚨 Ultrasonic Signal Loss Detected: {data['ultrasonic_signal_loss']}")
    else:
