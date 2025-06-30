@@ -41,12 +41,12 @@ elif page == "Dashboard":
        st.success("✅ No Signal Loss Detected in Ultrasonic Sensor")
    servo_temp = data['servo_temperature_(°c)'].iloc[-1]
   
-    fig = go.Figure(go.Indicator(
-    mode="gauge+number+delta",
-    value=servo_temp,  # تأكد أن هذا المتغير رقم (int أو float)
-    delta={'reference': 70},
-    title={'text': "Servo Temperature (°C)"},
-    gauge={
+   fig = go.Figure(go.Indicator(
+   mode="gauge+number+delta",
+   value=servo_temp,  # تأكد أن هذا المتغير رقم (int أو float)
+   delta={'reference': 70},
+   title={'text': "Servo Temperature (°C)"},
+   gauge={
         'axis': {'range': [0, 100]},
         'bar': {'color': "darkblue"},
         'steps': [
