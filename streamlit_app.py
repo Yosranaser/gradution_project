@@ -10,7 +10,7 @@ import plotly.graph_objects as go
 import osmnx as ox
 from geopy.geocoders import Nominatim
 from geopy.extra.rate_limiter import RateLimiter
-from streamlit_geolocation import geolocation
+
 from streamlit_js_eval import streamlit_js_eval
 
 def find_place_osm(query, lat, lon):
