@@ -217,11 +217,11 @@ elif page=="chatbot":
         st.warning("⚠️ الرجاء السماح بالوصول إلى الموقع في المتصفح.")
     
     # ✅ إعداد الجيوكودر
-    geolocator = Nominatim(user_agent="smartcar-app")
-    reverse = RateLimiter(geolocator.reverse, min_delay_seconds=1)
+   geolocator = Nominatim(user_agent="smartcar-app")
+   reverse = RateLimiter(geolocator.reverse, min_delay_seconds=1)
     
     # ✅ اختيار نوع المكان
-    place_type = st.selectbox(
+   place_type = st.selectbox(
         "🔍 اختر نوع المكان اللي بتدور عليه:",
         {
             "محطة بنزين": {"amenity": "fuel"},
@@ -232,7 +232,7 @@ elif page=="chatbot":
         }.keys()
     )
     
-    tags_dict = {
+   tags_dict = {
         "محطة بنزين": {"amenity": "fuel"},
         "مطعم": {"amenity": "restaurant"},
         "صيدلية": {"amenity": "pharmacy"},
@@ -240,9 +240,9 @@ elif page=="chatbot":
         "مستشفى": {"amenity": "hospital"}
     }
     
-    tags = tags_dict[place_type]
+   tags = tags_dict[place_type]
     
-    if location and st.button("🔍 ابحث عن أقرب مكان"):
+   if location and st.button("🔍 ابحث عن أقرب مكان"):
         try:
             with st.spinner("جاري البحث..."):
                 gdf = ox.features.features_from_point(
