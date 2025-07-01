@@ -206,61 +206,78 @@ if page == "Dashboard":
 
    
 elif page=="chatbot":
-    lat = st.number_input("Latitude (خط العرض)", value=30.059556, format="%.6f")
-    lon = st.number_input("Longitude (خط الطول)", value=31.223620, format="%.6f")
+    st.markdown("---")
+
+# ✅ إعداد الجيوكودر
+    geolocator = Nominatim(user_agent="smartcar-app")
+    reverse = RateLimiter(geolocator.reverse, min_delay_seconds=1)
+    
+    # ✅ إدخال إحداثيات المستخدم
+    latitude = st.number_input("Latitude (خط العرض)", value=30.059556, format="%.6f")
+    longitude = st.number_input("Longitude (خط الطول)", value=31.223620, format="%.6f")
+    
+    # ✅ اختيار نوع المكان
     place_type = st.selectbox(
-    "🔍 اختر نوع المكان اللي بتدور عليه:",
-    {
+        "🔍 اختر نوع المكان اللي بتدور عليه:",
+        {
+            "محطة بنزين": {"amenity": "fuel"},
+            "مطعم": {"amenity": "restaurant"},
+            "صيدلية": {"amenity": "pharmacy"},
+            "موقف سيارات": {"amenity": "parking"},
+            "مستشفى": {"amenity": "hospital"}
+        }.keys()
+    )
+    
+    # ✅ إعداد التاج للبحث
+    tags_dict = {
         "محطة بنزين": {"amenity": "fuel"},
         "مطعم": {"amenity": "restaurant"},
         "صيدلية": {"amenity": "pharmacy"},
         "موقف سيارات": {"amenity": "parking"},
         "مستشفى": {"amenity": "hospital"}
-    }.keys()
-)
-
-# ✅ إعداد التاج للبحث
-tags_dict = {
-    "محطة بنزين": {"amenity": "fuel"},
-    "مطعم": {"amenity": "restaurant"},
-    "صيدلية": {"amenity": "pharmacy"},
-    "موقف سيارات": {"amenity": "parking"},
-    "مستشفى": {"amenity": "hospital"}
-}
-
-tags = tags_dict[place_type]
-
-# ✅ زر البحث
-if st.button("🔍 ابحث عن أقرب مكان"):
-    try:
-        with st.spinner("جاري البحث..."):
-            # ✅ البحث باستخدام الدالة الجديدة
-            gdf = ox.features.features_from_point(
-                (lat, lon), tags=tags, dist=2000
-            )
-
-            if not gdf.empty:
-                st.success(f"✅ تم العثور على {len(gdf)} {place_type}(s) في نطاق 2 كم:")
-                results = []
-                for index, row in gdf.iterrows():
-                    name = row.get('name', '📍 مكان بدون اسم')
-                    lat_place = row.geometry.centroid.y
-                    lon_place = row.geometry.centroid.x
-                    results.append({
-                        '📍 الاسم': name,
-                        '📍 خط العرض': lat_place,
-                        '📍 خط الطول': lon_place
-                    })
-                df = pd.DataFrame(results)
-                st.dataframe(df)
-
-                # ✅ رسم خريطة بسيطة
-                st.map(df.rename(columns={"📍 خط العرض": "lat", "📍 خط الطول": "lon"}))
-            else:
-                st.warning("🚫 لم يتم العثور على أماكن قريبة في هذا النطاق.")
-    except Exception as e:
-        st.error(f"❌ حدث خطأ أثناء البحث: {e}")
+    }
     
+    tags = tags_dict[place_type]
+    
+    # ✅ زر البحث
+    if st.button("🔍 ابحث عن أقرب مكان"):
+        try:
+            with st.spinner("جاري البحث..."):
+                # ✅ البحث باستخدام OSMnx
+                gdf = ox.features.features_from_point(
+                    (latitude, longitude), tags=tags, dist=2000
+                )
+    
+                if not gdf.empty:
+                    st.success(f"✅ تم العثور على {len(gdf)} {place_type}(s) في نطاق 2 كم:")
+                    results = []
+                    for index, row in gdf.iterrows():
+                        name = row.get('name', '📍 مكان بدون اسم')
+                        place_lat = row.geometry.centroid.y
+                        place_lon = row.geometry.centroid.x
+    
+                        # ✅ جلب العنوان باستخدام reverse geocoding
+                        try:
+                            location = reverse((place_lat, place_lon))
+                            address = location.address if location else "🚫 عنوان غير متوفر"
+                        except:
+                            address = "🚫 عنوان غير متوفر"
+    
+                        results.append({
+                            '📍 الاسم': name,
+                            '🏠 العنوان': address,
+                            '📍 خط العرض': place_lat,
+                            '📍 خط الطول': place_lon
+                        })
+                    df = pd.DataFrame(results)
+                    st.dataframe(df)
+    
+                    # ✅ رسم خريطة تفاعلية
+                    st.map(df.rename(columns={"📍 خط العرض": "lat", "📍 خط الطول": "lon"}))
+                else:
+                    st.warning("🚫 لم يتم العثور على أماكن قريبة في هذا النطاق.")
+        except Exception as e:
+            st.error(f"❌ حدث خطأ أثناء البحث: {e}")
 #------------------------------------------------------------------------
 elif page=="الصفحة الرئيسية":
    col1, col2 = st.columns([1,1])
