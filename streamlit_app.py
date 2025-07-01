@@ -10,6 +10,7 @@ import plotly.graph_objects as go
 import osmnx as ox
 from geopy.geocoders import Nominatim
 from geopy.extra.rate_limiter import RateLimiter
+from streamlit_geolocation import geolocation
 def find_place_osm(query, lat, lon):
     url = "https://nominatim.openstreetmap.org/search"
     params = {
@@ -205,18 +206,19 @@ if page == "Dashboard":
    data_table = pd.DataFrame(list(data.items()), columns=["Component", "Value"])
    st.dataframe(data_table)
 #-------------------------------------------------------------------------------
-
-   
 elif page=="chatbot":
-    st.markdown("---")
+   location = geolocation()
 
-# ✅ إعداد الجيوكودر
+    if location:
+        latitude = location['latitude']
+        longitude = location['longitude']
+        st.success(f"📍 موقعك الحالي: {latitude}, {longitude}")
+    else:
+        st.warning("⚠️ الرجاء السماح بالوصول إلى الموقع في المتصفح.")
+    
+    # ✅ إعداد الجيوكودر
     geolocator = Nominatim(user_agent="smartcar-app")
     reverse = RateLimiter(geolocator.reverse, min_delay_seconds=1)
-    
-    # ✅ إدخال إحداثيات المستخدم
-    latitude = st.number_input("Latitude (خط العرض)", value=30.059556, format="%.6f")
-    longitude = st.number_input("Longitude (خط الطول)", value=31.223620, format="%.6f")
     
     # ✅ اختيار نوع المكان
     place_type = st.selectbox(
@@ -230,7 +232,6 @@ elif page=="chatbot":
         }.keys()
     )
     
-    # ✅ إعداد التاج للبحث
     tags_dict = {
         "محطة بنزين": {"amenity": "fuel"},
         "مطعم": {"amenity": "restaurant"},
@@ -241,11 +242,9 @@ elif page=="chatbot":
     
     tags = tags_dict[place_type]
     
-    # ✅ زر البحث
-    if st.button("🔍 ابحث عن أقرب مكان"):
+    if location and st.button("🔍 ابحث عن أقرب مكان"):
         try:
             with st.spinner("جاري البحث..."):
-                # ✅ البحث باستخدام OSMnx
                 gdf = ox.features.features_from_point(
                     (latitude, longitude), tags=tags, dist=2000
                 )
@@ -258,7 +257,6 @@ elif page=="chatbot":
                         place_lat = row.geometry.centroid.y
                         place_lon = row.geometry.centroid.x
     
-                        # ✅ جلب العنوان باستخدام reverse geocoding
                         try:
                             location = reverse((place_lat, place_lon))
                             address = location.address if location else "🚫 عنوان غير متوفر"
@@ -274,10 +272,9 @@ elif page=="chatbot":
                     df = pd.DataFrame(results)
                     st.dataframe(df)
     
-                    # ✅ رسم خريطة تفاعلية
                     st.map(df.rename(columns={"📍 خط العرض": "lat", "📍 خط الطول": "lon"}))
                 else:
-                    st.warning("🚫 لم يتم العثور على أماكن قريبة في هذا النطاق.")
+                    st.warning("🚫 لم يتم العثور على أماكن قريبة.")
         except Exception as e:
             st.error(f"❌ حدث خطأ أثناء البحث: {e}")
 #------------------------------------------------------------------------
