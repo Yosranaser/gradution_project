@@ -12,22 +12,35 @@ def find_place_osm(query, lat, lon):
     params = {
         'q': query,
         'format': 'json',
-        'limit': 3,
+        'limit': 5,
         'addressdetails': 1,
         'viewbox': f"{lon-0.05},{lat-0.05},{lon+0.05},{lat+0.05}",
         'bounded': 1
     }
+
     headers = {
-        'User-Agent': 'MyCarApp/1.0 (yosranaser43@gmail.com)'
+        'User-Agent': 'SmartCarApp/1.0 (yosranaser43@gmail.com)'  
     }
 
-    response = requests.get(url, params=params, headers=headers)
-
     try:
+        response = requests.get(url, params=params, headers=headers, timeout=10)
+        response.raise_for_status()  # لو في خطأ HTTP يوقف
         data = response.json()
+    except requests.exceptions.HTTPError as errh:
+        st.error(f"HTTP Error: {errh}")
+        return []
+    except requests.exceptions.ConnectionError as errc:
+        st.error(f"Error Connecting: {errc}")
+        return []
+    except requests.exceptions.Timeout as errt:
+        st.error(f"Timeout Error: {errt}")
+        return []
+    except requests.exceptions.RequestException as err:
+        st.error(f"OOps: Something Else {err}")
+        return []
     except Exception as e:
-        st.error("❌ حدث خطأ في الاتصال بـ OpenStreetMap.")
-        st.error(response.text)  # تطبع الرسالة كاملة لمعرفة السبب
+        st.error(f"Unknown error: {e}")
+        st.error(response.text)
         return []
 
     if data:
