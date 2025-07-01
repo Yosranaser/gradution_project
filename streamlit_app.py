@@ -17,8 +17,18 @@ def find_place_osm(query, lat, lon):
         'viewbox': f"{lon-0.05},{lat-0.05},{lon+0.05},{lat+0.05}",
         'bounded': 1
     }
-    response = requests.get(url, params=params)
-    data = response.json()
+    headers = {
+        'User-Agent': 'MyCarApp/1.0 (your_email@example.com)'
+    }
+
+    response = requests.get(url, params=params, headers=headers)
+
+    try:
+        data = response.json()
+    except Exception as e:
+        st.error("❌ حدث خطأ في الاتصال بـ OpenStreetMap.")
+        st.error(response.text)  # تطبع الرسالة كاملة لمعرفة السبب
+        return []
 
     if data:
         results = []
@@ -30,6 +40,7 @@ def find_place_osm(query, lat, lon):
         return results
     else:
         return ["🚫 لم يتم العثور على مكان مطابق."]
+
 def generate_response(intent):
     if intent == "nearest_gas":
         return "🛢️ أقرب محطة بنزين هي محطة وطنية على بعد 2.3 كم."
