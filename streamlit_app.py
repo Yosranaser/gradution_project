@@ -204,7 +204,7 @@ elif page=="chatbot":
             st.success("تم العثور على النتائج التالية:")
             for res in results:
                 st.write(res)
-    )
+    
 #------------------------------------------------------------------------
 elif page=="الصفحة الرئيسية":
    col1, col2 = st.columns([1,1])
