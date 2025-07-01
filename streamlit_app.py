@@ -11,6 +11,7 @@ import osmnx as ox
 from geopy.geocoders import Nominatim
 from geopy.extra.rate_limiter import RateLimiter
 from streamlit_geolocation import geolocation
+
 def find_place_osm(query, lat, lon):
     url = "https://nominatim.openstreetmap.org/search"
     params = {
