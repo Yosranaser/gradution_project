@@ -206,6 +206,8 @@ if page == "Dashboard":
 
    
 elif page=="chatbot":
+    lat = st.number_input("Latitude (خط العرض)", value=30.059556, format="%.6f")
+    lon = st.number_input("Longitude (خط الطول)", value=31.223620, format="%.6f")
     place_type = st.selectbox(
     "🔍 اختر نوع المكان اللي بتدور عليه:",
     {
