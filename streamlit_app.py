@@ -8,6 +8,7 @@ import io
 import requests
 import plotly.graph_objects as go
 import osmnx as ox
+from geopy.geocoders import Nominatim
 def find_place_osm(query, lat, lon):
     url = "https://nominatim.openstreetmap.org/search"
     params = {
