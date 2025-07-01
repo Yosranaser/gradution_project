@@ -18,7 +18,7 @@ def find_place_osm(query, lat, lon):
         'bounded': 1
     }
     headers = {
-        'User-Agent': 'MyCarApp/1.0 (your_email@example.com)'
+        'User-Agent': 'MyCarApp/1.0 (yosranaser43@gmail.com)'
     }
 
     response = requests.get(url, params=params, headers=headers)
