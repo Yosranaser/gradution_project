@@ -11,7 +11,7 @@ requests
 osmnx
 geopy
 streamlit-geolocation
-
+streamlit-js-eval
 
 
 
