@@ -232,8 +232,10 @@ tags = tags_dict[place_type]
 if st.button("🔍 ابحث عن أقرب مكان"):
     try:
         with st.spinner("جاري البحث..."):
-            # ✅ البحث عن الأماكن في نطاق 2 كم
-            gdf = ox.geometries_from_point((lat, lon), tags=tags, dist=2000)
+            # ✅ البحث باستخدام الدالة الجديدة
+            gdf = ox.features.features_from_point(
+                (lat, lon), tags=tags, dist=2000
+            )
 
             if not gdf.empty:
                 st.success(f"✅ تم العثور على {len(gdf)} {place_type}(s) في نطاق 2 كم:")
