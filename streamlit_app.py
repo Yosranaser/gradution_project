@@ -209,11 +209,11 @@ if page == "Dashboard":
 elif page=="chatbot":
    location = geolocation()
 
-    if location:
+   if location:
         latitude = location['latitude']
         longitude = location['longitude']
         st.success(f"📍 موقعك الحالي: {latitude}, {longitude}")
-    else:
+   else:
         st.warning("⚠️ الرجاء السماح بالوصول إلى الموقع في المتصفح.")
     
     # ✅ إعداد الجيوكودر
