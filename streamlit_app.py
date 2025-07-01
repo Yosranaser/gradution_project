@@ -11,6 +11,7 @@ import osmnx as ox
 from geopy.geocoders import Nominatim
 from geopy.extra.rate_limiter import RateLimiter
 from streamlit_geolocation import geolocation
+from streamlit_js_eval import streamlit_js_eval
 
 def find_place_osm(query, lat, lon):
     url = "https://nominatim.openstreetmap.org/search"
@@ -208,8 +209,10 @@ if page == "Dashboard":
    st.dataframe(data_table)
 #-------------------------------------------------------------------------------
 elif page=="chatbot":
-   location = geolocation()
+   coords = streamlit_js_eval(js_expressions="navigator.geolocation.getCurrentPosition",
+                            key="get_position")
 
+   st.write(coords)
    if location:
         latitude = location['latitude']
         longitude = location['longitude']
