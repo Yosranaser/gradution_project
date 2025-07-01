@@ -7,6 +7,7 @@ from PIL import Image
 import io
 import requests
 import plotly.graph_objects as go
+import osmnx as ox
 def find_place_osm(query, lat, lon):
     url = "https://nominatim.openstreetmap.org/search"
     params = {
@@ -202,32 +203,59 @@ if page == "Dashboard":
    data_table = pd.DataFrame(list(data.items()), columns=["Component", "Value"])
    st.dataframe(data_table)
 #-------------------------------------------------------------------------------
-elif page=="chatbot":
-   
 
-    st.set_page_config(page_title="Car Chatbot", page_icon="🚗")
-    st.title("🚗 Smart Car Chatbot with OpenStreetMap")
-    st.subheader("مساعدك الذكي للبحث عن الأماكن القريبة")
-    
-    st.markdown("---")
-    
-    # ✅ إدخال إحداثيات المستخدم
-    lat = st.number_input("Latitude (خط العرض)", value=30.059556, format="%.6f")
-    lon = st.number_input("Longitude (خط الطول)", value=31.223620, format="%.6f")
-    
-    # ✅ إدخال نوع المكان
+   
+elif page=="chatbot":
     place_type = st.selectbox(
-        "🔍 اختر نوع المكان اللي بتدور عليه:",
-        ["gas station", "restaurant", "pharmacy", "hospital", "parking"]
-    )
-    
-    # ✅ دالة البحث باستخدام Nominatim API
-    if st.button("🔍 ابحث"):
+    "🔍 اختر نوع المكان اللي بتدور عليه:",
+    {
+        "محطة بنزين": {"amenity": "fuel"},
+        "مطعم": {"amenity": "restaurant"},
+        "صيدلية": {"amenity": "pharmacy"},
+        "موقف سيارات": {"amenity": "parking"},
+        "مستشفى": {"amenity": "hospital"}
+    }.keys()
+)
+
+# ✅ إعداد التاج للبحث
+tags_dict = {
+    "محطة بنزين": {"amenity": "fuel"},
+    "مطعم": {"amenity": "restaurant"},
+    "صيدلية": {"amenity": "pharmacy"},
+    "موقف سيارات": {"amenity": "parking"},
+    "مستشفى": {"amenity": "hospital"}
+}
+
+tags = tags_dict[place_type]
+
+# ✅ زر البحث
+if st.button("🔍 ابحث عن أقرب مكان"):
+    try:
         with st.spinner("جاري البحث..."):
-            results = find_place_osm(place_type, lat, lon)
-            st.success("تم العثور على النتائج التالية:")
-            for res in results:
-                st.write(res)
+            # ✅ البحث عن الأماكن في نطاق 2 كم
+            gdf = ox.geometries_from_point((lat, lon), tags=tags, dist=2000)
+
+            if not gdf.empty:
+                st.success(f"✅ تم العثور على {len(gdf)} {place_type}(s) في نطاق 2 كم:")
+                results = []
+                for index, row in gdf.iterrows():
+                    name = row.get('name', '📍 مكان بدون اسم')
+                    lat_place = row.geometry.centroid.y
+                    lon_place = row.geometry.centroid.x
+                    results.append({
+                        '📍 الاسم': name,
+                        '📍 خط العرض': lat_place,
+                        '📍 خط الطول': lon_place
+                    })
+                df = pd.DataFrame(results)
+                st.dataframe(df)
+
+                # ✅ رسم خريطة بسيطة
+                st.map(df.rename(columns={"📍 خط العرض": "lat", "📍 خط الطول": "lon"}))
+            else:
+                st.warning("🚫 لم يتم العثور على أماكن قريبة في هذا النطاق.")
+    except Exception as e:
+        st.error(f"❌ حدث خطأ أثناء البحث: {e}")
     
 #------------------------------------------------------------------------
 elif page=="الصفحة الرئيسية":
