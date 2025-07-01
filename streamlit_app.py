@@ -7,6 +7,29 @@ from PIL import Image
 import io
 import requests
 import plotly.graph_objects as go
+def find_place_osm(query, lat, lon):
+    url = "https://nominatim.openstreetmap.org/search"
+    params = {
+        'q': query,
+        'format': 'json',
+        'limit': 3,
+        'addressdetails': 1,
+        'viewbox': f"{lon-0.05},{lat-0.05},{lon+0.05},{lat+0.05}",
+        'bounded': 1
+    }
+    response = requests.get(url, params=params)
+    data = response.json()
+
+    if data:
+        results = []
+        for place in data:
+            name = place.get("display_name")
+            lat = place.get("lat")
+            lon = place.get("lon")
+            results.append(f"📍 {name} (Lat: {lat}, Lon: {lon})")
+        return results
+    else:
+        return ["🚫 لم يتم العثور على مكان مطابق."]
 def generate_response(intent):
     if intent == "nearest_gas":
         return "🛢️ أقرب محطة بنزين هي محطة وطنية على بعد 2.3 كم."
@@ -32,6 +55,7 @@ def detect_intent(user_input):
 st.set_page_config(layout="wide")
 st.sidebar.title("🚗 Car App Navigation")
 page = st.sidebar.selectbox("اختر الصفحة:", ["الصفحة الرئيسية", "Dashboard","chatbot"])
+#-----------------------------------------------------------------------------------------------
 if page == "Dashboard":
    st.title("🚗 Dashboard")
    st.write("هنا يتم عرض الداشبورد والبيانات الخاصة بحالة السيارة.")
@@ -152,17 +176,36 @@ if page == "Dashboard":
    st.subheader("📜 Summary Data")
    
    data_table = pd.DataFrame(list(data.items()), columns=["Component", "Value"])
-   st.dataframe(data_table) 
+   st.dataframe(data_table)
+#-------------------------------------------------------------------------------
 elif page=="chatbot":
-   st.title("🚗 Smart FOTA Car Chatbot")
-   st.markdown("---")
    
-   # ✅ مربع إدخال السؤال
-   user_input = st.text_input("💬 اسأل أي شيء عن الطريق، الاتجاهات، أو الأماكن القريبة:")
-   intent = detect_intent(user_input)
-   if user_input:
-    response = generate_response(intent)
-    st.success(response)
+
+    st.set_page_config(page_title="Car Chatbot", page_icon="🚗")
+    st.title("🚗 Smart Car Chatbot with OpenStreetMap")
+    st.subheader("مساعدك الذكي للبحث عن الأماكن القريبة")
+    
+    st.markdown("---")
+    
+    # ✅ إدخال إحداثيات المستخدم
+    lat = st.number_input("Latitude (خط العرض)", value=30.059556, format="%.6f")
+    lon = st.number_input("Longitude (خط الطول)", value=31.223620, format="%.6f")
+    
+    # ✅ إدخال نوع المكان
+    place_type = st.selectbox(
+        "🔍 اختر نوع المكان اللي بتدور عليه:",
+        ["gas station", "restaurant", "pharmacy", "hospital", "parking"]
+    )
+    
+    # ✅ دالة البحث باستخدام Nominatim API
+    if st.button("🔍 ابحث"):
+        with st.spinner("جاري البحث..."):
+            results = find_place_osm(place_type, lat, lon)
+            st.success("تم العثور على النتائج التالية:")
+            for res in results:
+                st.write(res)
+    )
+#------------------------------------------------------------------------
 elif page=="الصفحة الرئيسية":
    col1, col2 = st.columns([1,1])
    with col1:
