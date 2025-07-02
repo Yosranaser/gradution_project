@@ -11,6 +11,17 @@ import osmnx as ox
 from geopy.geocoders import Nominatim
 from geopy.extra.rate_limiter import RateLimiter
 from streamlit_js_eval import streamlit_js_eval
+import requests
+
+def get_location_by_ip():
+    url = "https://ipinfo.io/json"
+    response = requests.get(url)
+    data = response.json()
+    loc = data['loc'].split(',')
+    latitude = float(loc[0])
+    longitude = float(loc[1])
+    return latitude, longitude
+
 
 def find_place_osm(query, lat, lon):
     url = "https://nominatim.openstreetmap.org/search"
@@ -210,12 +221,13 @@ if page == "Dashboard":
 elif page=="chatbot":
     geolocator = Nominatim(user_agent="smartcar-app")
     reverse = RateLimiter(geolocator.reverse, min_delay_seconds=1)
+  
+    latitude, longitude = get_location_by_ip()
+    print(f"📍 خط العرض: {lat}, خط الطول: {lon}")
+
+   
     
-    # ✅ إدخال إحداثيات المستخدم
-    latitude = st.number_input("Latitude (خط العرض)", value=30.059556, format="%.6f")
-    longitude = st.number_input("Longitude (خط الطول)", value=31.223620, format="%.6f")
     
-    # ✅ اختيار نوع المكان
     place_type = st.selectbox(
         "🔍 اختر نوع المكان اللي بتدور عليه:",
         {
