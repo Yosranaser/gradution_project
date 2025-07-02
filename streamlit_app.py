@@ -219,11 +219,11 @@ if page == "Dashboard":
    st.dataframe(data_table)
 #-------------------------------------------------------------------------------
 elif page=="chatbot":
-    geolocator = Nominatim(user_agent="smartcar-app")
-    reverse = RateLimiter(geolocator.reverse, min_delay_seconds=1)
+    #geolocator = Nominatim(user_agent="smartcar-app")
+    #reverse = RateLimiter(geolocator.reverse, min_delay_seconds=1)
   
     latitude, longitude = get_location_by_ip()
-    print(f"📍 خط العرض: {lat}, خط الطول: {lon}")
+    st.write(f"📍 خط العرض: {lat}, خط الطول: {lon}")
 
    
     
