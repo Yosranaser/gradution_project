@@ -222,7 +222,7 @@ elif page=="chatbot":
     #geolocator = Nominatim(user_agent="smartcar-app")
     #reverse = RateLimiter(geolocator.reverse, min_delay_seconds=1)
   
-    latitude, longitude =30.475764, 31.197813
+    latitude, longitude =30.572071, 31.230505
     st.write(f"📍 خط العرض: {latitude}, خط الطول: {longitude}")
 
    
