@@ -10,7 +10,6 @@ import plotly.graph_objects as go
 import osmnx as ox
 from geopy.geocoders import Nominatim
 from geopy.extra.rate_limiter import RateLimiter
-
 from streamlit_js_eval import streamlit_js_eval
 
 def find_place_osm(query, lat, lon):
@@ -209,14 +208,12 @@ if page == "Dashboard":
    st.dataframe(data_table)
 #-------------------------------------------------------------------------------
 elif page=="chatbot":
-    coords = get_geolocation()
-
-    if coords:
-        latitude = coords['latitude']
-        longitude = coords['longitude']
-        st.success(f"📍 موقعك الحالي: {latitude}, {longitude}")
-    else:
-        st.warning("⚠️ جاري انتظار إذن تحديد الموقع...")
+    coords = streamlit_js_eval(
+        js_expressions=["navigator.geolocation.getCurrentPosition(
+            position => ({latitude: position.coords.latitude, longitude: position.coords.longitude})
+    )"],
+    key="get_position"
+)
     
     # ✅ إعداد الجيوكودر
     geolocator = Nominatim(user_agent="smartcar-app")
