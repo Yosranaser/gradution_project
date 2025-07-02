@@ -208,16 +208,12 @@ if page == "Dashboard":
    st.dataframe(data_table)
 #-------------------------------------------------------------------------------
 elif page=="chatbot":
-    coords = streamlit_js_eval(
-        js_expressions=["navigator.geolocation.getCurrentPosition(
-            position => ({latitude: position.coords.latitude, longitude: position.coords.longitude})
-    )"],
-        key="get_position"
-)
-    
-    # ✅ إعداد الجيوكودر
     geolocator = Nominatim(user_agent="smartcar-app")
     reverse = RateLimiter(geolocator.reverse, min_delay_seconds=1)
+    
+    # ✅ إدخال إحداثيات المستخدم
+    latitude = st.number_input("Latitude (خط العرض)", value=30.059556, format="%.6f")
+    longitude = st.number_input("Longitude (خط الطول)", value=31.223620, format="%.6f")
     
     # ✅ اختيار نوع المكان
     place_type = st.selectbox(
@@ -231,6 +227,7 @@ elif page=="chatbot":
         }.keys()
     )
     
+    # ✅ إعداد التاج للبحث
     tags_dict = {
         "محطة بنزين": {"amenity": "fuel"},
         "مطعم": {"amenity": "restaurant"},
@@ -241,9 +238,11 @@ elif page=="chatbot":
     
     tags = tags_dict[place_type]
     
-    if coords and st.button("🔍 ابحث عن أقرب مكان"):
+    # ✅ زر البحث
+    if st.button("🔍 ابحث عن أقرب مكان"):
         try:
             with st.spinner("جاري البحث..."):
+                # ✅ البحث باستخدام OSMnx
                 gdf = ox.features.features_from_point(
                     (latitude, longitude), tags=tags, dist=2000
                 )
@@ -256,6 +255,7 @@ elif page=="chatbot":
                         place_lat = row.geometry.centroid.y
                         place_lon = row.geometry.centroid.x
     
+                        # ✅ جلب العنوان باستخدام reverse geocoding
                         try:
                             location = reverse((place_lat, place_lon))
                             address = location.address if location else "🚫 عنوان غير متوفر"
@@ -271,9 +271,10 @@ elif page=="chatbot":
                     df = pd.DataFrame(results)
                     st.dataframe(df)
     
+                    # ✅ رسم خريطة تفاعلية
                     st.map(df.rename(columns={"📍 خط العرض": "lat", "📍 خط الطول": "lon"}))
                 else:
-                    st.warning("🚫 لم يتم العثور على أماكن قريبة.")
+                    st.warning("🚫 لم يتم العثور على أماكن قريبة في هذا النطاق.")
         except Exception as e:
             st.error(f"❌ حدث خطأ أثناء البحث: {e}")
 
