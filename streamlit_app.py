@@ -212,7 +212,7 @@ elif page=="chatbot":
         js_expressions=["navigator.geolocation.getCurrentPosition(
             position => ({latitude: position.coords.latitude, longitude: position.coords.longitude})
     )"],
-    key="get_position"
+        key="get_position"
 )
     
     # ✅ إعداد الجيوكودر
