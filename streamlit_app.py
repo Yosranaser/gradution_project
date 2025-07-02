@@ -223,7 +223,7 @@ elif page=="chatbot":
     #reverse = RateLimiter(geolocator.reverse, min_delay_seconds=1)
   
     latitude, longitude = get_location_by_ip()
-    st.write(f"📍 خط العرض: {lat}, خط الطول: {lon}")
+    st.write(f"📍 خط العرض: {latitude}, خط الطول: {longitude}")
 
    
     
