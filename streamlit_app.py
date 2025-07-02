@@ -209,23 +209,21 @@ if page == "Dashboard":
    st.dataframe(data_table)
 #-------------------------------------------------------------------------------
 elif page=="chatbot":
-   coords = streamlit_js_eval(js_expressions="navigator.geolocation.getCurrentPosition",
-                            key="get_position")
+    coords = get_geolocation()
 
-   st.write(coords)
-   if location:
-        latitude = location['latitude']
-        longitude = location['longitude']
+    if coords:
+        latitude = coords['latitude']
+        longitude = coords['longitude']
         st.success(f"📍 موقعك الحالي: {latitude}, {longitude}")
-   else:
-        st.warning("⚠️ الرجاء السماح بالوصول إلى الموقع في المتصفح.")
+    else:
+        st.warning("⚠️ جاري انتظار إذن تحديد الموقع...")
     
     # ✅ إعداد الجيوكودر
-   geolocator = Nominatim(user_agent="smartcar-app")
-   reverse = RateLimiter(geolocator.reverse, min_delay_seconds=1)
+    geolocator = Nominatim(user_agent="smartcar-app")
+    reverse = RateLimiter(geolocator.reverse, min_delay_seconds=1)
     
     # ✅ اختيار نوع المكان
-   place_type = st.selectbox(
+    place_type = st.selectbox(
         "🔍 اختر نوع المكان اللي بتدور عليه:",
         {
             "محطة بنزين": {"amenity": "fuel"},
@@ -236,7 +234,7 @@ elif page=="chatbot":
         }.keys()
     )
     
-   tags_dict = {
+    tags_dict = {
         "محطة بنزين": {"amenity": "fuel"},
         "مطعم": {"amenity": "restaurant"},
         "صيدلية": {"amenity": "pharmacy"},
@@ -244,9 +242,9 @@ elif page=="chatbot":
         "مستشفى": {"amenity": "hospital"}
     }
     
-   tags = tags_dict[place_type]
+    tags = tags_dict[place_type]
     
-   if location and st.button("🔍 ابحث عن أقرب مكان"):
+    if coords and st.button("🔍 ابحث عن أقرب مكان"):
         try:
             with st.spinner("جاري البحث..."):
                 gdf = ox.features.features_from_point(
@@ -281,6 +279,7 @@ elif page=="chatbot":
                     st.warning("🚫 لم يتم العثور على أماكن قريبة.")
         except Exception as e:
             st.error(f"❌ حدث خطأ أثناء البحث: {e}")
+
 #------------------------------------------------------------------------
 elif page=="الصفحة الرئيسية":
    col1, col2 = st.columns([1,1])
