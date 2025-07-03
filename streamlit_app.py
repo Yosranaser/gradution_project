@@ -355,8 +355,9 @@ elif page=="الصفحة الرئيسية":
                    flag=1
                elif score2 > score1 and score2 > 20:
                    flag=1
-                   st.success("✅ Face matched with shorouk")
-                   st.image("shorouk2.jpg", caption="shorouk ahmed has sussessifully logged in ")
+                   st.success("✅ Face matched with yossra ")
+                   st.image("yossra.jpg", caption="yossra naser has sussessifully logged in")
+                   flag=1
                    
                else:
                    st.error("❌ Face not recognized")
