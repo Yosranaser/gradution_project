@@ -94,7 +94,7 @@ def detect_intent(user_input):
         return "general"
 st.set_page_config(layout="wide")
 st.sidebar.title("🚗 Car App Navigation")
-page = st.sidebar.selectbox("اختر الصفحة:", ["الصفحة الرئيسية", "Dashboard","chatbot"])
+page = st.sidebar.selectbox("اختر الصفحة:", ["الصفحة الرئيسية", "Dashboard","chatbot","hex file attack detection"])
 #-----------------------------------------------------------------------------------------------
 if page == "Dashboard":
    st.title("🚗 Dashboard")
