@@ -411,6 +411,9 @@ elif page=="الصفحة الرئيسية":
                    
                except Exception as e:
                    st.error(f"❌ حصل خطأ: {e}")
+ elif page=="hex file attack detection":
+  st.write("yossra")
+  
        
 elif page=="hex file attack detection":
    model = load_model("hex_model.h5")  # بعد ما تنزليه أو تسحبيه من GitHub
