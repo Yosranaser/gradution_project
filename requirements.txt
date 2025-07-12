@@ -13,5 +13,4 @@ geopy
 streamlit-geolocation
 streamlit-js-eval
 tensorflow
-
-
+scikit-learn
