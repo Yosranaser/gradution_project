@@ -12,7 +12,7 @@ from geopy.geocoders import Nominatim
 from geopy.extra.rate_limiter import RateLimiter
 from streamlit_js_eval import streamlit_js_eval
 import requests
-
+ from tensorflow.keras.models import load_model
 def get_location_by_ip():
     url = "https://ipinfo.io/json"
     response = requests.get(url)
@@ -95,6 +95,7 @@ def detect_intent(user_input):
 st.set_page_config(layout="wide")
 st.sidebar.title("🚗 Car App Navigation")
 page = st.sidebar.selectbox("اختر الصفحة:", ["الصفحة الرئيسية", "Dashboard","chatbot","hex file attack detection"])
+
 #-----------------------------------------------------------------------------------------------
 if page == "Dashboard":
    st.title("🚗 Dashboard")
@@ -411,5 +412,7 @@ elif page=="الصفحة الرئيسية":
                except Exception as e:
                    st.error(f"❌ حصل خطأ: {e}")
        
-        
+elif page=="hex file attack detection":
+   model = load_model("hex_model.h5")  # بعد ما تنزليه أو تسحبيه من GitHub
+
         
