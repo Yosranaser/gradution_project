@@ -13,6 +13,39 @@ from geopy.extra.rate_limiter import RateLimiter
 from streamlit_js_eval import streamlit_js_eval
 import requests
 from tensorflow.keras.models import load_model
+import streamlit as st
+import numpy as np
+from tensorflow.keras.models import load_model
+
+# دالة لتحويل محتوى HEX إلى array
+def hex_to_int_array_from_string(content):
+    lines = content.strip().split('\n')
+    data = []
+    for line in lines:
+        hex_part = line.strip()[1:9]  # مثال: نأخذ أول 8 أرقام بعد النقطتين
+        try:
+            number = int(hex_part, 16)
+            data.append(number)
+        except:
+            continue
+    return np.array(data)
+
+# دالة التنبؤ
+def predict_hex_file(model_path, file):
+    model = load_model(model_path)
+
+    content = file.read().decode("utf-8")  # اقرأ الملف كنص
+    data = hex_to_int_array_from_string(content)
+
+    if len(data.shape) == 1:
+        data = np.expand_dims(data, axis=0)  # batch size
+    data = np.expand_dims(data, axis=-1)  # إذا النموذج يحتاج 3D
+
+    prediction = model.predict(data)[0][0]
+    if prediction > 0.5:
+        return "⚠️ Attacked HEX file detected."
+    else:
+        return "✅ Normal HEX file."
 def get_location_by_ip():
     url = "https://ipinfo.io/json"
     response = requests.get(url)
@@ -411,11 +444,17 @@ elif page=="الصفحة الرئيسية":
                    
                except Exception as e:
                    st.error(f"❌ حصل خطأ: {e}")
- elif page=="hex file attack detection":
-  st.write("yossra")
+
   
        
 elif page=="hex file attack detection":
-   model = load_model("hex_model.h5")  # بعد ما تنزليه أو تسحبيه من GitHub
+    st.title("🔍 HEX File Attack Detector")
+
+    uploaded_file = st.file_uploader("📁 ارفع ملف HEX", type=["hex"])
+    
+    if uploaded_file is not None:
+        result = predict_hex_file("hex_model.h5", uploaded_file)
+        st.success(f"النتيجة: {result}")
+
 
         
