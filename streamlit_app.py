@@ -16,45 +16,45 @@ from tensorflow.keras.models import load_model
 import streamlit as st
 import numpy as np
 from tensorflow.keras.models import load_model
-def hex_to_int_array_from_string(content):
-    lines = content.strip().split('\n')
-    data = []
-    for line in lines:
-        hex_part = line.strip()[1:9]  # مثال: نأخذ أول 8 أرقام بعد النقطتين
-        try:
-            number = int(hex_part, 16)
-            data.append(number)
-        except:
-            continue
-    return np.array(data)
-def extract_features_from_hex(hex_lines, max_lines=100):
-    features = []
-    for line in hex_lines[:max_lines]:
-        line = line.strip().replace(":", "")
-        row = [int(line[i:i+2], 16)/255 for i in range(0, min(len(line), 32), 2)]
-        if len(row) < 16:
-            row += [0] * (16 - len(row))
-        features.append(row)
+import numpy as np
+from tensorflow.keras.models import load_model
+from your_feature_code import hex_file_to_dataframe, pad_data  # استبدلي ده حسب مكان دوالك
 
-    # نكمل الملف لو أقل من max_lines
-    while len(features) < max_lines:
-        features.append([0]*16)
+def predict_hex_file(model_path, uploaded_file, max_lines=100, max_data_len=16):
+    # 1. قراءة محتوى الملف
+    hex_content = uploaded_file.read().decode("utf-8")
+    lines = hex_content.strip().splitlines()
 
-    return np.array(features)
+    # 2. تحويله إلى DataFrame
+    import tempfile
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".hex", mode="w") as tmp:
+        tmp.write(hex_content)
+        tmp_path = tmp.name
 
-def predict_hex_file(model_path, uploaded_file):
-    hex_lines = uploaded_file.read().decode("utf-8").splitlines()
+    df = hex_file_to_dataframe(tmp_path)
 
-    # لازم نفس max_lines وخصائص اللي دربتي عليها الموديل
-    features = extract_features_from_hex(hex_lines, max_lines=100)
+    # 3. تجهيز الخصائص بنفس شكل التدريب
+    feature_rows = []
+    for _, row in df.head(max_lines).iterrows():
+        data = pad_data(row["data_bytes"], max_data_len)
+        features = data + [
+            row["record_type"],
+            row["valid_checksum"],
+            row["repeated_pattern"]
+        ]
+        feature_rows.append(features)
 
-    # إعادة تشكيل البيانات
-    input_data = np.expand_dims(features, axis=0)  # (1, 100, 16)
+    # تكملة لو عدد الأسطر أقل من 100
+    while len(feature_rows) < max_lines:
+        feature_rows.append([0] * (max_data_len + 3))
 
+    input_data = np.expand_dims(np.array(feature_rows), axis=0)  # شكل (1, 100, 19)
+
+    # 4. تحميل الموديل والتنبؤ
     model = load_model(model_path)
     prediction = model.predict(input_data)[0][0]
-    return prediction
 
+    return prediction
 
 
 def get_location_by_ip():
@@ -459,13 +459,19 @@ elif page=="الصفحة الرئيسية":
   
        
 elif page=="hex file attack detection":
-    st.title("🔍 HEX File Attack Detector")
+    st.title("🔐 HEX File Attack Detection")
 
-    uploaded_file = st.file_uploader("📁 ارفع ملف HEX", type=["hex"])
+    uploaded_file = st.file_uploader("📂 ارفع ملف HEX لفحصه", type=["hex"])
     
     if uploaded_file is not None:
-        result = predict_hex_file("hex_model.h5", uploaded_file)
-        st.success(f"النتيجة: {result}")
+        st.info("📊 جاري التحليل...")
+    
+        prediction = predict_hex_file("hex_model.h5", uploaded_file)
+    
+        if prediction >= 0.5:
+            st.error(f"🚨 الملف يحتمل أن يكون **مصاب** بهجوم. (Confidence: {prediction:.2f})")
+        else:
+            st.success(f"✅ الملف يبدو **سليماً**. (Confidence: {prediction:.2f})")
 
 
         
