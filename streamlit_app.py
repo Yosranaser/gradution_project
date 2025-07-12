@@ -16,8 +16,6 @@ from tensorflow.keras.models import load_model
 import streamlit as st
 import numpy as np
 from tensorflow.keras.models import load_model
-
-# دالة لتحويل محتوى HEX إلى array
 def hex_to_int_array_from_string(content):
     lines = content.strip().split('\n')
     data = []
@@ -31,21 +29,18 @@ def hex_to_int_array_from_string(content):
     return np.array(data)
 
 # دالة التنبؤ
-def predict_hex_file(model_path, file):
+import numpy as np
+from tensorflow.keras.models import load_model
+
+def predict_hex_file(model_path, uploaded_file):
+    
+    hex_lines = uploaded_file.read().decode("utf-8").splitlines()
+    features = extract_features_from_hex(hex_lines)  # لازم تكوني عرفتي الدالة دي
+    input_data = np.expand_dims(features, axis=0)  # (1, num_lines, num_features_per_line)
     model = load_model(model_path)
+    prediction = model.predict(input_data)[0][0]
+    return prediction
 
-    content = file.read().decode("utf-8")  # اقرأ الملف كنص
-    data = hex_to_int_array_from_string(content)
-
-    if len(data.shape) == 1:
-        data = np.expand_dims(data, axis=0)  # batch size
-    data = np.expand_dims(data, axis=-1)  # إذا النموذج يحتاج 3D
-
-    prediction = model.predict(data)[0][0]
-    if prediction > 0.5:
-        return "⚠️ Attacked HEX file detected."
-    else:
-        return "✅ Normal HEX file."
 def get_location_by_ip():
     url = "https://ipinfo.io/json"
     response = requests.get(url)
