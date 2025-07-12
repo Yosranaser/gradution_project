@@ -31,7 +31,16 @@ def hex_to_int_array_from_string(content):
 # دالة التنبؤ
 import numpy as np
 from tensorflow.keras.models import load_model
-
+def extract_features_from_hex(hex_lines):
+    # افترضي إن كل سطر HEX بنمثّله بـ 16 رقم عشري مثلًا
+    features = []
+    for line in hex_lines:
+        line = line.strip().replace(":", "")  # إزالة :
+        row = [int(line[i:i+2], 16)/255 for i in range(0, min(len(line), 32), 2)]  # أول 16 بايت
+        if len(row) < 16:
+            row += [0] * (16 - len(row))  # نكمل الصف بصفر لو ناقص
+        features.append(row)
+    return np.array(features)
 def predict_hex_file(model_path, uploaded_file):
     
     hex_lines = uploaded_file.read().decode("utf-8").splitlines()
