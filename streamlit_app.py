@@ -12,7 +12,7 @@ from geopy.geocoders import Nominatim
 from geopy.extra.rate_limiter import RateLimiter
 from streamlit_js_eval import streamlit_js_eval
 import requests
- from tensorflow.keras.models import load_model
+from tensorflow.keras.models import load_model
 def get_location_by_ip():
     url = "https://ipinfo.io/json"
     response = requests.get(url)
