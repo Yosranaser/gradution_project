@@ -18,6 +18,12 @@ import numpy as np
 from tensorflow.keras.models import load_model
 import numpy as np
 from tensorflow.keras.models import load_model
+def pad_data(data_list, max_len=16):
+    if len(data_list) > max_len:
+        return data_list[:max_len]
+    else:
+        return data_list + [0] * (max_len - len(data_list))
+
 def hex_file_to_dataframe(file_path):
     rows = []
     with open(file_path, 'r') as f:
