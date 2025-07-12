@@ -27,39 +27,34 @@ def hex_to_int_array_from_string(content):
         except:
             continue
     return np.array(data)
-
-# دالة التنبؤ
-import numpy as np
-from tensorflow.keras.models import load_model
-def extract_features_from_hex(hex_lines):
-    # افترضي إن كل سطر HEX بنمثّله بـ 16 رقم عشري مثلًا
+def extract_features_from_hex(hex_lines, max_lines=100):
     features = []
-    for line in hex_lines:
-        line = line.strip().replace(":", "")  # إزالة :
-        row = [int(line[i:i+2], 16)/255 for i in range(0, min(len(line), 32), 2)]  # أول 16 بايت
+    for line in hex_lines[:max_lines]:
+        line = line.strip().replace(":", "")
+        row = [int(line[i:i+2], 16)/255 for i in range(0, min(len(line), 32), 2)]
         if len(row) < 16:
-            row += [0] * (16 - len(row))  # نكمل الصف بصفر لو ناقص
+            row += [0] * (16 - len(row))
         features.append(row)
+
+    # نكمل الملف لو أقل من max_lines
+    while len(features) < max_lines:
+        features.append([0]*16)
+
     return np.array(features)
-from tensorflow.keras.models import load_model
-import numpy as np
 
 def predict_hex_file(model_path, uploaded_file):
-    # قراءة الملف
     hex_lines = uploaded_file.read().decode("utf-8").splitlines()
 
-    # استخراج الخصائص
-    features = extract_features_from_hex(hex_lines)
+    # لازم نفس max_lines وخصائص اللي دربتي عليها الموديل
+    features = extract_features_from_hex(hex_lines, max_lines=100)
 
     # إعادة تشكيل البيانات
-    input_data = np.expand_dims(features, axis=0)  # (1, lines, features_per_line)
+    input_data = np.expand_dims(features, axis=0)  # (1, 100, 16)
 
-    # تحميل النموذج
     model = load_model(model_path)
-
-    # توقع
     prediction = model.predict(input_data)[0][0]
     return prediction
+
 
 
 def get_location_by_ip():
