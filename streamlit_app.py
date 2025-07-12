@@ -18,7 +18,22 @@ import numpy as np
 from tensorflow.keras.models import load_model
 import numpy as np
 from tensorflow.keras.models import load_model
-from your_feature_code import hex_file_to_dataframe, pad_data  # استبدلي ده حسب مكان دوالك
+def hex_file_to_dataframe(file_path):
+    rows = []
+    with open(file_path, 'r') as f:
+        for idx, line in enumerate(f.readlines()):
+            parsed = parse_hex_line(line)
+            if parsed:
+                parsed["line_index"] = idx
+                rows.append(parsed)
+    df = pd.DataFrame(rows)
+    return df
+def pad_data(data_list, max_len=16):
+    if len(data_list) > max_len:
+        return data_list[:max_len]
+    else:
+        return data_list + [0] * (max_len - len(data_list))
+
 
 def predict_hex_file(model_path, uploaded_file, max_lines=100, max_data_len=16):
     # 1. قراءة محتوى الملف
