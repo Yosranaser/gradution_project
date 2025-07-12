@@ -41,14 +41,26 @@ def extract_features_from_hex(hex_lines):
             row += [0] * (16 - len(row))  # نكمل الصف بصفر لو ناقص
         features.append(row)
     return np.array(features)
+from tensorflow.keras.models import load_model
+import numpy as np
+
 def predict_hex_file(model_path, uploaded_file):
-    
+    # قراءة الملف
     hex_lines = uploaded_file.read().decode("utf-8").splitlines()
-    features = extract_features_from_hex(hex_lines)  # لازم تكوني عرفتي الدالة دي
-    input_data = np.expand_dims(features, axis=0)  # (1, num_lines, num_features_per_line)
+
+    # استخراج الخصائص
+    features = extract_features_from_hex(hex_lines)
+
+    # إعادة تشكيل البيانات
+    input_data = np.expand_dims(features, axis=0)  # (1, lines, features_per_line)
+
+    # تحميل النموذج
     model = load_model(model_path)
+
+    # توقع
     prediction = model.predict(input_data)[0][0]
     return prediction
+
 
 def get_location_by_ip():
     url = "https://ipinfo.io/json"
