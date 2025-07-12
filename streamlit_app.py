@@ -18,11 +18,45 @@ import numpy as np
 from tensorflow.keras.models import load_model
 import numpy as np
 from tensorflow.keras.models import load_model
-def pad_data(data_list, max_len=16):
-    if len(data_list) > max_len:
-        return data_list[:max_len]
-    else:
-        return data_list + [0] * (max_len - len(data_list))
+def parse_hex_line(line):
+    line = line.strip()
+    if not line.startswith(':') or len(line) < 11:
+        return None
+    try:
+        byte_count = int(line[1:3], 16)
+        address = int(line[3:7], 16)
+        record_type = int(line[7:9], 16)
+        data = [int(line[i:i+2], 16) for i in range(9, 9 + byte_count * 2, 2)]
+        checksum = int(line[9 + byte_count * 2: 9 + byte_count * 2 + 2], 16)
+
+
+        total = byte_count + (address >> 8) + (address & 0xFF) + record_type + sum(data)
+        total = (total & 0xFF)
+        calc_checksum = ((~total + 1) & 0xFF)
+        is_valid = (checksum == calc_checksum)
+
+
+        repeated = int(len(set(data)) == 1 and len(data) > 0)
+        entropy = calculate_entropy(data)
+        max_val = max(data) if data else 0
+        min_val = min(data) if data else 0
+        is_ff_pattern = int(max_val == 255 and min_val == 255)
+
+        return {
+            "byte_count": byte_count,
+            "address": address,
+            "record_type": record_type,
+            "data_bytes": data,
+            "checksum": checksum,
+            "valid_checksum": int(is_valid),
+            "repeated_pattern": repeated,
+            "entropy": entropy,
+            "max_val": max_val,
+            "min_val": min_val,
+            "is_ff_pattern": is_ff_pattern
+        }
+    except:
+        return None
 
 def hex_file_to_dataframe(file_path):
     rows = []
